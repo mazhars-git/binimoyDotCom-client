@@ -1,11 +1,19 @@
-const LintingPage = () => {
+import ManageListings from "@/components/modules/listings";
+import { getAllProducts } from "@/services/Product";
+import React from "react";
+
+const ManageListingsPage = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ page: string }>;
+}) => {
+  const { page } = await searchParams;
+  const { data, meta } = await getAllProducts(page, "3");
   return (
     <div>
-      <h1 className="text-3xl font-bold">Listing Page</h1>
-      <p className="mt-4">This is the listing page content.</p>
-      <p className="mt-4">You can add your listing table here and manage it.</p>
+      <ManageListings />
     </div>
   );
 };
 
-export default LintingPage;
+export default ManageListingsPage;
