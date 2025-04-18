@@ -39,11 +39,11 @@ export default function Navbar() {
         </Link>
 
         <nav className="flex justify-center items-center gap-2">
-          <Link href="/login">
-            <MessageCircle />
-          </Link>
           {user?.email ? (
             <>
+              <Link href="/messages">
+                <MessageCircle />
+              </Link>
               <DropdownMenu>
                 <DropdownMenuTrigger>
                   <Avatar>
