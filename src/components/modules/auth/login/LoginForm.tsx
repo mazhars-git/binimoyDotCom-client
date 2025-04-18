@@ -70,14 +70,12 @@ const LoginForm = () => {
     }
   };
   return (
-    <div className="border-2 border-gray-300 rounded-xl flex-grow max-w-md w-full p-5 space-y-5">
-      <div className="flex items-center space-x-4 ">
+    <div className="border-1 border-gray-300 bg-slate-50 rounded-xl flex-grow max-w-md w-full p-5 space-y-5">
+      <div className="flex items-center space-x-8">
         <span className="text-2xl font-bold">AD</span>
         <div>
           <h1 className="text-xl font-semibold">Login</h1>
-          <p className="font-extralight text-sm text-gray-600">
-            Wellcome back!
-          </p>
+          <p className="font-extralight text-sm text-gray-600">Welcome back!</p>
         </div>
       </div>
       <Form {...form}>
@@ -117,13 +115,14 @@ const LoginForm = () => {
           <Button
             disabled={!reCaptchaStatus}
             type="submit"
-            className="mt-5 w-full">
+            className="mt-5 w-full"
+          >
             {isSubmitting ? "Logging..." : "Login"}
           </Button>
         </form>
       </Form>
       <p className="text-sm text-gray-600 text-center my-3">
-        Don&apos;t have an account ?
+        Don&apos;t have an account?
         <Link href="/register" className="text-primary ml-2">
           Register
         </Link>

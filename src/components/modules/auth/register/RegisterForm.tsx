@@ -49,8 +49,8 @@ const RegisterForm = () => {
     }
   };
   return (
-    <div className="border-2 border-gray-300 rounded-xl flex-grow max-w-md w-full p-5 space-y-5">
-      <div className="flex items-center space-x-4 ">
+    <div className="border-1 bg-slate-50 border-gray-400 rounded-xl flex-grow max-w-md w-full p-5 space-y-5">
+      <div className="flex items-center space-x-8">
         <span className="text-3xl font-bold">AD</span>
         <div>
           <h1 className="text-xl font-semibold">Register</h1>
@@ -135,13 +135,14 @@ const RegisterForm = () => {
           <Button
             disabled={Boolean(passwordConfirm && password !== passwordConfirm)}
             type="submit"
-            className="mt-5 w-full">
+            className="mt-5 w-full"
+          >
             {isSubmitting ? "Registering..." : "Register"}
           </Button>
         </form>
       </Form>
       <p className="text-sm text-gray-600 text-center my-3">
-        Already have an account ?
+        Already have an account?
         <Link href="/login" className="text-primary ml-2">
           Login
         </Link>

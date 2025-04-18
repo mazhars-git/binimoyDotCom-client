@@ -2,7 +2,7 @@
 
 import { Button } from "../ui/button";
 import Link from "next/link";
-import { LogOut } from "lucide-react";
+import { LogOut, MessageCircle } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -38,7 +38,10 @@ export default function Navbar() {
           <h1 className="text-2xl font-black flex items-center">AdolBodol</h1>
         </Link>
 
-        <nav className="flex gap-2">
+        <nav className="flex justify-center items-center gap-2">
+          <Link href="/login">
+            <MessageCircle />
+          </Link>
           {user?.email ? (
             <>
               <DropdownMenu>
@@ -64,14 +67,16 @@ export default function Navbar() {
                         user?.role === "admin"
                           ? "/dashboard/admin"
                           : "/dashboard"
-                      }`}>
+                      }`}
+                    >
                       Dashboard
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
                     className="bg-red-100 cursor-pointer"
-                    onClick={handleLogOut}>
+                    onClick={handleLogOut}
+                  >
                     <LogOut />
                     <span>Log Out</span>
                   </DropdownMenuItem>
