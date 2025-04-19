@@ -25,12 +25,12 @@ export const addProductListings = async (
 
 // get all listings products
 
-export const getAllProducts = async (page?: string, limit?: string) => {
+export const getAllListings = async (page?: string, limit?: string) => {
   const params = new URLSearchParams();
 
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_CLIENT_BASE_API}/listings`,
+      `${process.env.NEXT_PUBLIC_SERVER_BASE_API}/listings`,
       {
         next: {
           tags: ["PRODUCT"],

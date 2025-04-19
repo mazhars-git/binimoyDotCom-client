@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ABTable } from "@/components/ui/core/ABTable";
 import { IProduct } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
-import { Delete, Edit, Eye, Plus, Trash } from "lucide-react";
+import { Edit, Eye, Plus, Trash } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
@@ -26,12 +26,12 @@ const ManageListings = ({
 
   const columns: ColumnDef<IProduct>[] = [
     {
-      accessorKey: "name",
-      header: "Product Name",
+      accessorKey: "img",
+      header: "Product Image",
       cell: ({ row }) => (
-        <div>
+        <div className="flex items-center space-x-3">
           <Image
-            src={row.original.imageUrls[0]}
+            src={row.original.imageUrls}
             alt={row.original.title}
             width={40}
             height={40}
@@ -59,9 +59,9 @@ const ManageListings = ({
       accessorKey: "action",
       header: "Action",
       cell: ({ row }) => (
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-5">
           <button
-            className="text-slate-500 hover:text-sky-400"
+            className="text-slate-500 hover:text-sky-500"
             title="View"
             onClick={() => handleView(row.original)}
           >
@@ -69,10 +69,12 @@ const ManageListings = ({
           </button>
 
           <button
-            className="text-slate-500 hover:text-sky-400"
+            className="text-slate-500 hover:text-sky-500"
             title="Edit"
             onClick={() =>
-              router.push(`/user/listings/update-listing/${row.original._id}`)
+              router.push(
+                `/dashboard/listing/update-listing/${row.original._id}`
+              )
             }
           >
             <Edit className="w-5 h-5" />
