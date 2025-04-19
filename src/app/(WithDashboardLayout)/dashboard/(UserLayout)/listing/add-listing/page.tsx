@@ -1,11 +1,11 @@
-import React from "react";
+import AddListingForm from "@/components/modules/listings/AddListingForm";
 
-const page = () => {
+const AddListingPage = () => {
   return (
-    <div>
-      <h1>add listing</h1>
+    <div className="flex items-center justify-center">
+      <AddListingForm />
     </div>
   );
 };
 
-export default page;
+export default AddListingPage;

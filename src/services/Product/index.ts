@@ -30,7 +30,7 @@ export const getAllProducts = async (page?: string, limit?: string) => {
 
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_CLIENT_BASE_API}/listings?limit=${limit}&page=${page}&${params}`,
+      `${process.env.NEXT_PUBLIC_CLIENT_BASE_API}/listings`,
       {
         next: {
           tags: ["PRODUCT"],
