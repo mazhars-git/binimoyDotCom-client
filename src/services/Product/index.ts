@@ -1,3 +1,4 @@
+"use server";
 // add or list product
 
 import { cookies } from "next/headers";
@@ -7,7 +8,7 @@ export const addProductListings = async (
 ): Promise<any> => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_CLIENT_BASE_API}/listings`,
+      `${process.env.NEXT_PUBLIC_SERVER_BASE_API}/listings`,
       {
         method: "POST",
         body: productData,
@@ -16,7 +17,6 @@ export const addProductListings = async (
         },
       }
     );
-
     return res.json();
   } catch (error: any) {
     return Error(error.message);
