@@ -22,6 +22,14 @@ import { imageUpload } from "@/lib/imageUpload";
 import Image from "next/image";
 import { Upload } from "lucide-react";
 import axios from "axios";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Categories } from "@/constants/categories";
 
 // Define the form validation schema using zod
 
@@ -50,7 +58,7 @@ export default function AddListingForm() {
     mode: "onBlur",
     defaultValues: {
       title: "",
-      description: ""
+      description: "",
       price: 0,
       category: "",
       images: [],
@@ -163,7 +171,7 @@ export default function AddListingForm() {
       </div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="flex justify-between items-center border-t border-b py-3 my-5">
+          <div className="flex justify-between items-center border-b py-3 my-5">
             <p className="text-primary font-bold text-xl">Basic Information</p>
           </div>
 
@@ -174,98 +182,6 @@ export default function AddListingForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Product Title</FormLabel>
-                  <FormControl>
-                    <Input {...field} value={field.value || ""} />
-                  </FormControl>
-                  <FormDescription />
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="price"
-              render={({ field }) => (
-                <FormItem className="ml-2">
-                  <FormLabel>Price*</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      placeholder="Enter price"
-                      {...field}
-                      onChange={(e) => {
-                        const value = e.target.value;
-                        field.onChange(value === "" ? "" : parseFloat(value));
-                      }}
-                      value={field.value === 0 ? "" : field.value}
-                      className="dark:bg-slate-200 placeholder:dark:text-slate-400 dark:text-slate-900 font-medium"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="condition"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Condition</FormLabel>
-                  <FormControl>
-                    <Input {...field} value={field.value || ""} />
-                  </FormControl>
-                  <FormDescription />
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="category"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Category</FormLabel>
-                  <FormControl>
-                    <Input {...field} value={field.value || ""} />
-                  </FormControl>
-                  <FormDescription />
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="quantity"
-              render={({ field }) => (
-                <FormItem className="ml-2">
-                  <FormLabel>Quantity*</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      placeholder="Enter price"
-                      {...field}
-                      onChange={(e) => {
-                        const value = e.target.value;
-                        field.onChange(value === "" ? "" : parseFloat(value));
-                      }}
-                      value={field.value === 0 ? "" : field.value}
-                      className="dark:bg-slate-200 placeholder:dark:text-slate-400 dark:text-slate-900 font-medium"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="status"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Status</FormLabel>
                   <FormControl>
                     <Input {...field} value={field.value || ""} />
                   </FormControl>
@@ -289,6 +205,127 @@ export default function AddListingForm() {
                 </FormItem>
               )}
             />
+
+            <FormField
+              control={form.control}
+              name="price"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Price*</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      placeholder="Enter price"
+                      {...field}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        field.onChange(value === "" ? "" : parseFloat(value));
+                      }}
+                      value={field.value === 0 ? "" : field.value}
+                      className="dark:bg-slate-200 placeholder:dark:text-slate-400 dark:text-slate-900 font-medium"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="quantity"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Quantity*</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      placeholder="Enter quantity"
+                      {...field}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        field.onChange(value === "" ? "" : parseFloat(value));
+                      }}
+                      value={field.value === 0 ? "" : field.value}
+                      className="dark:bg-slate-200 placeholder:dark:text-slate-400 dark:text-slate-900 font-medium"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className="pt-5 grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+            <FormField
+              control={form.control}
+              name="condition"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Condition</FormLabel>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select Condition" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="new">new</SelectItem>
+                      <SelectItem value="like new">like new</SelectItem>
+                      <SelectItem value="used">used</SelectItem>
+                      <SelectItem value="for parts">for parts</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="category"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Category</FormLabel>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select Category" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {Categories.map((category) => (
+                        <SelectItem key={category} value={category}>
+                          {category}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="status"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Status</FormLabel>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select Product Status" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="available">available</SelectItem>
+                      <SelectItem value="sold">sold</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
 
           <div>
@@ -296,7 +333,7 @@ export default function AddListingForm() {
               control={form.control}
               name="description"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="pt-5">
                   <FormLabel>Description</FormLabel>
                   <FormControl>
                     <Textarea
@@ -318,7 +355,7 @@ export default function AddListingForm() {
               control={form.control}
               name="images"
               render={() => (
-                <FormItem className="ml-2">
+                <FormItem className="">
                   <FormLabel>Product Image</FormLabel>
                   <div className="flex flex-col gap-4">
                     <input
@@ -330,7 +367,8 @@ export default function AddListingForm() {
                     />
                     <div
                       onClick={() => fileInputRef.current?.click()}
-                      className="cursor-pointer border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 flex flex-col items-center justify-center hover:border-gray-400 dark:hover:border-gray-500 transition-colors">
+                      className="cursor-pointer border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 flex flex-col items-center justify-center hover:border-gray-400 dark:hover:border-gray-500 transition-colors"
+                    >
                       {previewImage ? (
                         <div className="w-full">
                           <Image
@@ -363,11 +401,7 @@ export default function AddListingForm() {
             />
           </div>
 
-          <Button
-            type="submit"
-            className="mt-5 w-full"
-            disabled={!isSubmitting}
-          >
+          <Button type="submit" className="mt-5 w-full" disabled={isSubmitting}>
             {isSubmitting ? "Listing Product....." : "List Product"}
           </Button>
         </form>
