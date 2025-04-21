@@ -7,8 +7,8 @@ import { Metadata } from "next";
 
 //metadata
 export const metadata: Metadata = {
-  title: "SeccondMart | Profile",
-  description: "This is Profile page of seccond mart project",
+  title: "Your Profile | AdolBodol",
+  description: "View and manage your personal information, account settings, and activity on AdolBodol — your trusted platform for buying and selling second-hand items.",
 };
 
 
