@@ -18,6 +18,9 @@ import { registerUser } from "@/services/AuthService";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/context/UserContext";
+import Logo from "@/assets/Logo-adol-removebg-preview.png";
+import Image from "next/image";
+import { CardFooter } from "@/components/ui/card";
 
 const RegisterForm = () => {
   const form = useForm({
@@ -50,14 +53,11 @@ const RegisterForm = () => {
   };
   return (
     <div className="border-1 bg-slate-50 border-gray-400 rounded-xl flex-grow max-w-md w-full p-5 space-y-5">
-      <div className="flex items-center space-x-8">
-        <span className="text-3xl font-bold">AD</span>
-        <div>
-          <h1 className="text-xl font-semibold">Register</h1>
-          <p className="font-extralight text-sm text-gray-600">
-            Join us today and start your journey!
-          </p>
-        </div>
+      <div className="flex items-center justify-center">
+        <Image src={Logo} alt="Adol Bodol Logo" width={130} height={10} />
+      </div>
+      <div>
+        <h1 className="text-[13px] font-md text-[#333]">Join Adol Bodol to access exclusive Gadget items!</h1>
       </div>
       <Form {...form}>
         <form className="space-y-3" onSubmit={form.handleSubmit(onSubmit)}>
@@ -141,12 +141,17 @@ const RegisterForm = () => {
           </Button>
         </form>
       </Form>
-      <p className="text-sm text-gray-600 text-center my-3">
+      <CardFooter className="flex justify-center items-center gap-1 text-center">
+        <p className="text-sm text-[#333] font-medium">
         Already have an account?
-        <Link href="/login" className="text-primary ml-2">
+        </p>
+        <Link
+          href="/login"
+          className="text-sm font-semibold text-[#D8A7B1] hover:text-red-400 hover:underline"
+        >
           Login
         </Link>
-      </p>
+      </CardFooter>
     </div>
   );
 };
