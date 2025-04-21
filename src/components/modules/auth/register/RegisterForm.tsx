@@ -53,7 +53,7 @@ const RegisterForm = () => {
   };
   return (
     <div className="border-1 bg-slate-50 border-gray-400 rounded-xl flex-grow max-w-md w-full p-5 space-y-5">
-      <div className="flex items-center justify-center">
+      <div className="flex items-center justify-center -mb-4">
         <Image src={Logo} alt="Adol Bodol Logo" width={130} height={10} />
       </div>
       <div>
