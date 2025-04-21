@@ -128,8 +128,6 @@ export default function AddListingForm() {
   };
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    console.log("form data", data);
-    //imgbb
 
     const modifiedData = {
       ...data,
@@ -146,7 +144,6 @@ export default function AddListingForm() {
 
     try {
       const res = await addProductListings(modifiedData);
-      console.log(res);
       if (res.success) {
         toast.success(res.message);
         router.push("/dashboard/listing");

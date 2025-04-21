@@ -15,13 +15,11 @@ export const metadata: Metadata = {
 
 const UserProfile = async () => {
   const existUser = await getCurrentUser() as IUser;
-  // console.log(existUser.userId);
 
   const { data: userProfile } = await getSingleUser(
     existUser.email
   );
 
-  // console.log(userProfile)
 
   return (
     <div className="flex justify-center items-center">

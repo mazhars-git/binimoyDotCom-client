@@ -6,10 +6,8 @@ import { receiveMessage } from "@/services/Messages";
 const ConversationPage = async ({ params }: { params: { userId: string } }) => {
   try {
     const user = await getCurrentUser();
-    console.log("Current user:", user); // Debug log
     
     const userMessage = await receiveMessage(user._id, params.userId);
-    console.log("Received messages:", userMessage); // Debug log
     
     if (!Array.isArray(userMessage)) {
       console.error("Messages data is not an array:", userMessage);
