@@ -65,8 +65,6 @@ export const getCurrentUser = async () => {
   return decodedUser;
 };
 
-
-
 export const getCurrentUserDetails = async () => {
   try {
     const res = await fetch(
@@ -122,6 +120,47 @@ export const getNewToken = async () => {
       }
     );
     return res.json();
+  } catch (error: any) {
+    return Error(error);
+  }
+};
+
+export const forgetPassword = async (userData: FieldValues) => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_BASE_API}/auth/forget-password`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+        cache: "no-store",
+      }
+    );
+    const result = await res.json();
+    return result;
+  } catch (error: any) {
+    return Error(error);
+  }
+};
+
+export const resetPassword = async (token: string, userData: FieldValues) => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_BASE_API}/auth/reset-password`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: token,
+        },
+        body: JSON.stringify(userData),
+        cache: "no-store",
+      }
+    );
+    const result = await res.json();
+    return result;
   } catch (error: any) {
     return Error(error);
   }

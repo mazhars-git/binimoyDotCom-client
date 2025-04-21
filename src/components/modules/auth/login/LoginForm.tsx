@@ -32,6 +32,7 @@ const LoginForm = () => {
   const { refreshUser } = useUser();
 
   const [reCaptchaStatus, setReCaptchaStatus] = useState(false);
+  const [forgetPassword, setForgetPassword] = useState(null);
 
   const searchParams = useSearchParams();
   const redirect = searchParams.get("redirectPath");
@@ -67,18 +68,23 @@ const LoginForm = () => {
         }
       } else {
         toast.error(res?.message);
+        setForgetPassword(res?.message);
+        setReCaptchaStatus(false);
       }
     } catch (error: any) {
       console.log(error);
     }
   };
   return (
-    <div className="border-1 border-gray-300 bg-slate-50 rounded-xl flex-grow max-w-md w-full p-5 space-y-5">
+    <div className="border-1 border-gray-300 bg-slate-50 rounded-xl flex-grow max-w-md w-full p-5">
       <div className="flex items-center justify-center">
         <Image src={Logo} alt="Adol Bodol Logo" width={130} height={10} />
       </div>
-      <div>
-        <h1 className="text-[13px] font-md text-[#333]">Login to access your Adol Bodol account</h1>
+      <div className="mb-5">
+        <h1 className="text-2xl font-bold text-[#333]">Login</h1>
+        <h4 className="text-[13px] font-md text-[#333]">
+          Login to access your Adol Bodol account
+        </h4>
       </div>
       <Form {...form}>
         <form className="space-y-3" onSubmit={form.handleSubmit(onSubmit)}>
@@ -108,7 +114,7 @@ const LoginForm = () => {
               </FormItem>
             )}
           />
-          <div className="flex justify-center items-center">
+          <div>
             <ReCAPTCHA
               sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_CLIENT_KEY || ""}
               onChange={handleReCaptcha}
@@ -118,22 +124,32 @@ const LoginForm = () => {
           <Button
             disabled={!reCaptchaStatus}
             type="submit"
-            className="mt-5 w-full"
-          >
+            className="mt-5 w-full">
             {isSubmitting ? "Logging..." : "Login"}
           </Button>
         </form>
       </Form>
-      <CardFooter className="flex items-center justify-center gap-1 text-center">
-        <p className="text-sm text-[#333] font-medium">
-          Don&apos;t have an account?
-        </p>
-        <Link
-          href="/register"
-          className="text-sm font-semibold text-[#D8A7B1] hover:text-red-400 hover:underline"
-        >
-          Register
-        </Link>
+      <CardFooter className="flex items-center justify-center flex-col gap-1 text-center">
+        <div>
+          <p className="text-sm text-[#333] font-medium">
+            Don&apos;t have an account?
+          </p>
+          <Link
+            href="/register"
+            className="text-sm font-semibold text-[#D8A7B1] hover:text-red-400 hover:underline">
+            Register
+          </Link>
+        </div>
+        {forgetPassword && (
+          <div className="text-sm text-red-500 font-semibold mt-2">
+            <p>{forgetPassword}</p>
+            <Link
+              href="/forgot-password"
+              className="text-sm font-semibold text-[#D8A7B1] hover:text-red-400 hover:underline">
+              Forgot Password?
+            </Link>
+          </div>
+        )}
       </CardFooter>
     </div>
   );
