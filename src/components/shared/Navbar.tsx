@@ -19,7 +19,6 @@ import { protectedRoutes } from "@/constants";
 
 export default function Navbar() {
   const { user, userDetail, setIsLoading } = useUser();
-  console.log("userDetail", userDetail);
   const pathname = usePathname();
   const router = useRouter();
 

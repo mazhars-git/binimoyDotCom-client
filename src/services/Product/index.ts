@@ -7,7 +7,6 @@ import { cookies } from "next/headers";
 export const addProductListings = async (
   productData: IProduct
 ): Promise<any> => {
-  console.log("productData", JSON.stringify(productData));
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_SERVER_BASE_API}/listings`,
