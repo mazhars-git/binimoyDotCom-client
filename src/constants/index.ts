@@ -17,3 +17,6 @@ export const protectedRoutes = [
   "/dashboard/admin/listings",
   "/dashboard/admin/listings/:page",
 ];
+
+
+export type userRoles = 'user' | 'admin' | 'superAdmin';

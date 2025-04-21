@@ -1,9 +1,21 @@
-const PurchaseHistoryPage = () => {
+import PurchaseHistory from "@/components/modules/purchase";
+import { getCurrentUser } from "@/services/AuthService";
+import { getAllPurchases } from "@/services/Purchase";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Your Purchases | adolBodol",
+  description:
+    "Track and review your complete purchase history on adolBodol. Stay informed about your orders, transactions, and past purchases anytime.",
+};
+
+const PurchaseHistoryPage = async () => {
+  const { userId } = await getCurrentUser();
+
+  const { data: transactionsOfPurchase } = await getAllPurchases(userId);
   return (
     <div>
-      <h1 className="text-3xl font-bold">Purchase History Page</h1>
-      <p className="mt-4">This is the purchase history page.</p>
-      <p>You can view and manage your purchase history here.</p>
+      <PurchaseHistory transactions={transactionsOfPurchase}></PurchaseHistory>
     </div>
   );
 };
