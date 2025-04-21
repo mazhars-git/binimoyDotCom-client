@@ -22,7 +22,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { useUser } from "@/context/UserContext";
 import Logo from "@/assets/Logo-adol-removebg-preview.png";
 import Image from "next/image";
-import { CardFooter } from "@/components/ui/card";
+import { Card, CardFooter } from "@/components/ui/card";
 
 const LoginForm = () => {
   const form = useForm({
@@ -80,10 +80,10 @@ const LoginForm = () => {
       <div className="flex items-center justify-center">
         <Image src={Logo} alt="Adol Bodol Logo" width={130} height={10} />
       </div>
-      <div className="mb-5">
-        <h1 className="text-2xl font-bold text-[#333]">Login</h1>
+      <div className="mb-5 text-center">
+        <h1 className="text-2xl font-bold text-[#333]">Welcome Back!</h1>
         <h4 className="text-[13px] font-md text-[#333]">
-          Login to access your Adol Bodol account
+          Login to access your Adol Bodol account.
         </h4>
       </div>
       <Form {...form}>
@@ -114,7 +114,7 @@ const LoginForm = () => {
               </FormItem>
             )}
           />
-          <div>
+          <div className="flex justify-center items-center">
             <ReCAPTCHA
               sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_CLIENT_KEY || ""}
               onChange={handleReCaptcha}
@@ -124,28 +124,31 @@ const LoginForm = () => {
           <Button
             disabled={!reCaptchaStatus}
             type="submit"
-            className="mt-5 w-full">
+            className="mt-5 w-full"
+          >
             {isSubmitting ? "Logging..." : "Login"}
           </Button>
         </form>
       </Form>
       <CardFooter className="flex items-center justify-center flex-col gap-1 text-center">
-        <div>
+        <div className="pt-2">
           <p className="text-sm text-[#333] font-medium">
-            Don&apos;t have an account?
+            Don&apos;t have an account?{" "}
+            <Link
+              href="/register"
+              className="text-sm font-semibold text-[#D8A7B1] hover:text-red-400 hover:underline"
+            >
+              Register
+            </Link>
           </p>
-          <Link
-            href="/register"
-            className="text-sm font-semibold text-[#D8A7B1] hover:text-red-400 hover:underline">
-            Register
-          </Link>
         </div>
         {forgetPassword && (
           <div className="text-sm text-red-500 font-semibold mt-2">
             <p>{forgetPassword}</p>
             <Link
               href="/forgot-password"
-              className="text-sm font-semibold text-[#D8A7B1] hover:text-red-400 hover:underline">
+              className="text-sm font-semibold text-[#f19a9a] hover:text-red-500 hover:underline"
+            >
               Forgot Password?
             </Link>
           </div>

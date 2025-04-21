@@ -1,5 +1,6 @@
 "use server";
 import { IProduct } from "@/types";
+import { revalidateTag } from "next/cache";
 // add or list product
 
 import { cookies } from "next/headers";
@@ -25,7 +26,30 @@ export const addProductListings = async (
   }
 };
 
-// get all listings products
+// update listings product
+
+export const updateListedProduct = async (
+  productData: IProduct,
+  productId: string
+): Promise<any> => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_BASE_API}/listings/${productId}`,
+      {
+        method: "PATCH",
+        body: productData,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: (await cookies()).get("accessToken")!.value,
+        },
+      }
+    );
+    revalidateTag("PRODUCT");
+    return res.json();
+  } catch (error: any) {
+    return Error(error.message);
+  }
+};
 
 export const getAllListings = async (page?: string, limit?: string) => {
   const params = new URLSearchParams();
