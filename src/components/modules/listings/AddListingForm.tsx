@@ -50,14 +50,12 @@ export default function AddListingForm() {
     mode: "onBlur",
     defaultValues: {
       title: "",
-      description: "",
+      description: ""
       price: 0,
       category: "",
       images: [],
       quantity: 0,
       status: "",
-      condition: "",
-      location: "",
     },
   });
 
@@ -143,7 +141,6 @@ export default function AddListingForm() {
       location: data.location,
       images: data.images, // Ensure images are included
     };
-
     try {
       const res = await addProductListings(modifiedData);
       console.log(res);
@@ -366,7 +363,11 @@ export default function AddListingForm() {
             />
           </div>
 
-          <Button type="submit" className="mt-5 w-full" disabled={isSubmitting}>
+          <Button
+            type="submit"
+            className="mt-5 w-full"
+            disabled={!isSubmitting}
+          >
             {isSubmitting ? "Listing Product....." : "List Product"}
           </Button>
         </form>

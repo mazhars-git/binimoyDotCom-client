@@ -20,6 +20,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useUser } from "@/context/UserContext";
+import { Card, CardContent } from "@/components/ui/card";
 
 const LoginForm = () => {
   const form = useForm({
@@ -70,64 +71,78 @@ const LoginForm = () => {
     }
   };
   return (
-    <div className="border-1 border-gray-300 bg-slate-50 rounded-xl flex-grow max-w-md w-full p-5 space-y-5">
-      <div className="flex items-center space-x-8">
-        <span className="text-2xl font-bold">AD</span>
-        <div>
-          <h1 className="text-xl font-semibold">Login</h1>
-          <p className="font-extralight text-sm text-gray-600">Welcome back!</p>
-        </div>
-      </div>
-      <Form {...form}>
-        <form className="space-y-3" onSubmit={form.handleSubmit(onSubmit)}>
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input type="email" {...field} value={field.value || ""} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password</FormLabel>
-                <FormControl>
-                  <Input type="password" {...field} value={field.value || ""} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <div className="flex justify-center items-center">
-            <ReCAPTCHA
-              sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_CLIENT_KEY || ""}
-              onChange={handleReCaptcha}
-            />
+    <div className="flex-grow max-w-md w-full p-5 space-y-5">
+      <Card>
+        <CardContent>
+          <div className="flex items-center space-x-8">
+            <span className="text-2xl font-bold">AD</span>
+            <div>
+              <h1 className="text-xl font-semibold">Login</h1>
+              <p className="font-extralight text-sm text-gray-600">
+                Welcome back!
+              </p>
+            </div>
           </div>
+          <Form {...form}>
+            <form className="space-y-3" onSubmit={form.handleSubmit(onSubmit)}>
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="email"
+                        {...field}
+                        value={field.value || ""}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="password"
+                        {...field}
+                        value={field.value || ""}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className="flex justify-center items-center">
+                <ReCAPTCHA
+                  sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_CLIENT_KEY || ""}
+                  onChange={handleReCaptcha}
+                />
+              </div>
 
-          <Button
-            disabled={!reCaptchaStatus}
-            type="submit"
-            className="mt-5 w-full"
-          >
-            {isSubmitting ? "Logging..." : "Login"}
-          </Button>
-        </form>
-      </Form>
-      <p className="text-sm text-gray-600 text-center my-3">
-        Don&apos;t have an account?
-        <Link href="/register" className="text-primary ml-2">
-          Register
-        </Link>
-      </p>
+              <Button
+                disabled={!reCaptchaStatus}
+                type="submit"
+                className="mt-5 w-full"
+              >
+                {isSubmitting ? "Logging..." : "Login"}
+              </Button>
+            </form>
+          </Form>
+          <p className="text-sm text-gray-600 text-center my-3">
+            Don&apos;t have an account?
+            <Link href="/register" className="text-primary ml-2">
+              Register
+            </Link>
+          </p>
+        </CardContent>
+      </Card>
     </div>
   );
 };
