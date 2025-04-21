@@ -29,12 +29,11 @@ export default function AddListingForm() {
       title: "",
       description: "",
       price: "",
+      condition: "",
       category: "",
-      images: "",
+      location: "",
       quantity: "",
       status: "",
-      condition: "",
-      location: "",
     },
   });
 
@@ -46,8 +45,10 @@ export default function AddListingForm() {
     const modifiedData = {
       ...data,
       price: parseFloat(data.price),
-      status: parseInt(data.status),
+      quantity: parseFloat(data.quantity),
     };
+
+    console.log(modifiedData);
 
     const formData = new FormData();
     formData.append("data", JSON.stringify(modifiedData));
@@ -229,7 +230,11 @@ export default function AddListingForm() {
             </div>
           </div>
 
-          <Button type="submit" className="mt-5 w-full" disabled={isSubmitting}>
+          <Button
+            type="submit"
+            className="mt-5 w-full"
+            disabled={!isSubmitting}
+          >
             {isSubmitting ? "Listing Product....." : "List Product"}
           </Button>
         </form>
