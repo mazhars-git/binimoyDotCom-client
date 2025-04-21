@@ -73,7 +73,7 @@ const LoginForm = () => {
     }
   };
   return (
-    <div className="border-1 border-gray-300 bg-slate-50 rounded-xl flex-grow max-w-md w-full p-5 space-y-5">
+    <div className="border-1 border-gray-300 bg-slate-50 rounded-xl flex-grow max-w-md w-full p-5">
       <div className="flex items-center justify-center -mb-4">
         <Image src={Logo} alt="Adol Bodol Logo" width={130} height={10} />
       </div>
