@@ -16,6 +16,7 @@ const ManageListings = ({
   meta: any;
 }) => {
   const router = useRouter();
+  console.log("Products:", products);
 
   const handleView = (product: IProduct) => {
     console.log("Viewing:", product);
@@ -31,7 +32,7 @@ const ManageListings = ({
       cell: ({ row }) => (
         <div className="flex items-center space-x-3">
           <Image
-            src={row.original.imageUrls}
+            src={row.original.images[0] as string}
             alt={row.original.title}
             width={40}
             height={40}
@@ -63,8 +64,7 @@ const ManageListings = ({
           <button
             className="text-slate-500 hover:text-sky-500"
             title="View"
-            onClick={() => handleView(row.original)}
-          >
+            onClick={() => handleView(row.original)}>
             <Eye className="w-5 h-5" />
           </button>
 
@@ -75,16 +75,14 @@ const ManageListings = ({
               router.push(
                 `/dashboard/listing/update-listing/${row.original._id}`
               )
-            }
-          >
+            }>
             <Edit className="w-5 h-5" />
           </button>
 
           <button
             className="text-red-500 hover:text-red-700"
             title="Delete"
-            onClick={() => handleDelete(row.original._id)}
-          >
+            onClick={() => handleDelete(row.original._id as string)}>
             <Trash className="w-5 h-5" />
           </button>
         </div>
@@ -99,8 +97,7 @@ const ManageListings = ({
         <div className="flex items-center gap-2">
           <Button
             onClick={() => router.push("/dashboard/listing/add-listing")}
-            size="sm"
-          >
+            size="sm">
             Add Product <Plus />
           </Button>
         </div>

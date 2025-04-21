@@ -58,17 +58,17 @@ export const loginUser = async (userData: FieldValues) => {
 
 export const getCurrentUser = async () => {
   const accessToken = (await cookies()).get("accessToken")?.value;
-
-  let decodedData = null;
-
+  console.log("accessToken:", accessToken);
+  let decodedUser = null;
   if (accessToken) {
-    decodedData = await jwtDecode(accessToken);
+    decodedUser = jwtDecode(accessToken);
+    console.log(decodedUser)
 
-    return decodedData;
-  } else {
-    return null;
   }
+  return decodedUser;
 };
+
+
 
 export const getCurrentUserDetails = async () => {
   try {
