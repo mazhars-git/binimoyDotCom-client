@@ -16,7 +16,6 @@ const ManageListings = ({
   meta: any;
 }) => {
   const router = useRouter();
-  console.log("Products:", products);
 
   const handleView = (product: IProduct) => {
     console.log("Viewing:", product);

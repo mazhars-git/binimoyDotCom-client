@@ -48,6 +48,11 @@ const data = {
       icon: History,
     },
     {
+      title: "Wish List",
+      url: "/dashboard/wishlist",
+      icon: List,
+    },
+    {
       title: "Messages",
       url: "/messages",
       icon: Bot,
