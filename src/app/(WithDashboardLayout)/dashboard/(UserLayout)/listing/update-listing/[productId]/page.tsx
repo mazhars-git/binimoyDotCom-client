@@ -1,9 +1,11 @@
+import UpdateListingForm from "@/components/modules/listings/UpdateListingForm";
+import { IProduct } from "@/types";
 import React from "react";
 
-const page = () => {
+const page = ({ product }: { product: IProduct }) => {
   return (
     <div>
-      <h1>update product</h1>
+      <UpdateListingForm product={product} />
     </div>
   );
 };

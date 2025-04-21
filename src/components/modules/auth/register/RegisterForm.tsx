@@ -57,7 +57,9 @@ const RegisterForm = () => {
         <Image src={Logo} alt="Adol Bodol Logo" width={130} height={10} />
       </div>
       <div>
-        <h1 className="text-[13px] font-md text-[#333]">Join Adol Bodol to access exclusive Gadget items!</h1>
+        <h1 className="text-center text-[13px] font-md text-[#333]">
+          Join Adol Bodol to access exclusive Gadget items!
+        </h1>
       </div>
       <Form {...form}>
         <form className="space-y-3" onSubmit={form.handleSubmit(onSubmit)}>
@@ -143,7 +145,7 @@ const RegisterForm = () => {
       </Form>
       <CardFooter className="flex justify-center items-center gap-1 text-center">
         <p className="text-sm text-[#333] font-medium">
-        Already have an account?
+          Already have an account?
         </p>
         <Link
           href="/login"

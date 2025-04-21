@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { addProductListings } from "@/services/Product";
+import { addProductListings, updateListedProduct } from "@/services/Product";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { SubmitHandler, FieldValues, useForm } from "react-hook-form";
@@ -30,6 +30,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Categories } from "@/constants/categories";
+import { IProduct } from "@/types";
 
 // Define the form validation schema using zod
 
@@ -48,7 +49,7 @@ const productSchema = z.object({
 // Type for the form data
 type ProductFormData = z.infer<typeof productSchema>;
 
-export default function AddListingForm() {
+export default function UpdateListingForm({ product }: { product: IProduct }) {
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
@@ -57,13 +58,13 @@ export default function AddListingForm() {
     resolver: zodResolver(productSchema),
     mode: "onBlur",
     defaultValues: {
-      title: "",
-      description: "",
-      price: 0,
-      category: "",
-      images: [],
-      quantity: 0,
-      status: "",
+      title: product?.title || "",
+      description: product?.description || "",
+      price: product?.price || 0,
+      category: product?.category || "",
+      images: product?.images || "",
+      quantity: product?.quantity || 1,
+      status: product?.status || "",
     },
   });
 
@@ -147,7 +148,10 @@ export default function AddListingForm() {
       images: data.images, // Ensure images are included
     };
     try {
-      const res = await addProductListings(modifiedData);
+      const res = await updateListedProduct(
+        modifiedData,
+        product?._id as string
+      );
       if (res.success) {
         toast.success(res.message);
         router.push("/dashboard/listing");
@@ -404,7 +408,7 @@ export default function AddListingForm() {
           </div>
 
           <Button type="submit" className="mt-5 w-full" disabled={isSubmitting}>
-            {isSubmitting ? "Listing Product....." : "List Product"}
+            {isSubmitting ? "Updating Product....." : "Update Product"}
           </Button>
         </form>
       </Form>
