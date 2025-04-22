@@ -1,9 +1,11 @@
 export const protectedRoutes = [
   "/login",
   "/cart",
+  "/wishlist",
   "/dashboard",
   "/dashboard/:page",
   "/dashboard/profile",
+  "/dashboard/profile/change-password",
   "/dashboard/listing",
   "/dashboard/listing/:page",
   "/dashboard/sales-history",
@@ -18,5 +20,4 @@ export const protectedRoutes = [
   "/dashboard/admin/listings/:page",
 ];
 
-
-export type userRoles = 'user' | 'admin' | 'superAdmin';
+export type userRoles = "user" | "admin" | "superAdmin";

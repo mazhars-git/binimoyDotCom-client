@@ -1,19 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getCurrentUser } from "./services/AuthService";
+import { IUser } from "./types";
 
 type Role = keyof typeof roleBasedPrivateRoutes;
 
 const authRoutes = ["/login", "/register"];
 
 const roleBasedPrivateRoutes = {
-  user: [/^\/dashboard(?!\/admin)/, /^\/cart/, /^\/messages/],
+  user: [/^\/dashboard(?!\/admin)/, /^\/cart/, /^\/messages/, /^\/wishlist/],
   admin: [/^\/dashboard\/admin/],
 };
 
 export const middleware = async (request: NextRequest) => {
   const { pathname } = request.nextUrl;
 
-  const userInfo = await getCurrentUser();
+  const userInfo = (await getCurrentUser()) as IUser;
 
   if (!userInfo) {
     if (authRoutes.includes(pathname)) {
@@ -41,9 +42,11 @@ export const middleware = async (request: NextRequest) => {
 export const config = {
   matcher: [
     "/cart",
+    "/wishlist",
     "/dashboard",
     "/dashboard/:page",
     "/dashboard/profile",
+    "/dashboard/profile/change-password",
     "/dashboard/listing",
     "/dashboard/listing/:page",
     "/dashboard/sales-history",
