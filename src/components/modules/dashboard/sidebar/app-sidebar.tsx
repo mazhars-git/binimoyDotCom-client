@@ -23,7 +23,6 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
-import { getCurrentUserDetails } from "@/services/AuthService";
 import { useUser } from "@/context/UserContext";
 
 // This is sample data.
