@@ -80,13 +80,13 @@ const LoginForm = () => {
     }
   };
   return (
-    <div className="border-1 border-gray-300 bg-slate-50 rounded-xl flex-grow max-w-md w-full p-5">
+    <div className="border-1 border-gray-300 bg-slate-50 dark:bg-slate-800 rounded-xl flex-grow max-w-md w-full p-5">
       <div className="flex items-center justify-center">
         <Image src={Logo} alt="Adol Bodol Logo" width={130} height={10} />
       </div>
       <div className="mb-5 text-center">
-        <h1 className="text-2xl font-bold text-[#333]">Welcome Back!</h1>
-        <h4 className="text-[13px] font-md text-[#333]">
+        <h1 className="text-2xl font-bold ">Welcome Back!</h1>
+        <h4 className="text-[13px] font-md">
           Login to access your Adol Bodol account.
         </h4>
       </div>
@@ -99,7 +99,12 @@ const LoginForm = () => {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input type="email" {...field} value={field.value || ""} />
+                  <Input
+                    type="email"
+                    {...field}
+                    value={field.value || ""}
+                    className="dark:bg-slate-50 dark:text-black"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -117,6 +122,7 @@ const LoginForm = () => {
                       type={showPass ? "text" : "password"}
                       {...field}
                       value={field.value || ""}
+                      className="dark:bg-slate-50 dark:text-black"
                     />
                     <div
                       onClick={() => setShowPass(!showPass)}
@@ -134,6 +140,7 @@ const LoginForm = () => {
               ref={recaptchaRef}
               sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_CLIENT_KEY || ""}
               onChange={handleReCaptcha}
+              theme="dark"
             />
             <p
               role="button"
@@ -151,14 +158,14 @@ const LoginForm = () => {
           <Button
             disabled={!reCaptchaStatus}
             type="submit"
-            className="mt-5 w-full">
+            className="mt-5 w-full dark:text-white">
             {isSubmitting ? "Logging..." : "Login"}
           </Button>
         </form>
       </Form>
       <CardFooter className="flex items-center justify-center flex-col gap-1 text-center">
         <div className="pt-2">
-          <p className="text-sm text-[#333] font-medium">
+          <p className="text-sm  font-medium">
             Don&apos;t have an account?{" "}
             <Link
               href="/register"
@@ -169,11 +176,11 @@ const LoginForm = () => {
         </div>
         <div>
           {forgetPassword && (
-            <div className="text-sm text-red-500 font-semibold mt-2">
-              <p>{forgetPassword}</p>
+            <div className="text-sm text-red-500 font-semibold mt-2 ">
+              <p className="">{forgetPassword}</p>
               <Link
                 href="/forgot-password"
-                className="text-sm font-semibold text-[#f19a9a] hover:text-red-500 hover:underline">
+                className="text-sm font-semibold text-[#f19a9a]  hover:text-red-500 hover:underline">
                 Forgot Password?
               </Link>
             </div>
