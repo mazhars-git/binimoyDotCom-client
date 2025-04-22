@@ -45,7 +45,7 @@ const Footer = () => {
           </div>
         </div>
         <div className="flex flex-col items-center justify-between space-y-6 md:flex-row md:space-y-0">
-          <span>team pixel syndicate©2025 All rights reserved</span>
+          <span>Team Pixel Syndicate©2025 All rights reserved</span>
 
           <div className="flex items-center space-x-4">
             {socialLinks.map(({ href, icon: Icon }, index) => (
