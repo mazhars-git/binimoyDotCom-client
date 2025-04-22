@@ -28,7 +28,7 @@ const SearchBar = ({ searchOption }: { searchOption: string }) => {
   };
 
   //Clear the search input
-  const handeSearchCross = () => {
+  const handleSearchCross = () => {
     setSearchTerm("");
     const params = new URLSearchParams(searchParams);
     params.delete("searchTerm");
@@ -48,7 +48,7 @@ const SearchBar = ({ searchOption }: { searchOption: string }) => {
         onChange={handleChange}
       />
       <button
-        onClick={handeSearchCross}
+        onClick={handleSearchCross}
         className="ml-2 text-gray-500 hover:text-gray-700 absolute right-10 top-32"
       >
         <X className="w-4 h-4" />
