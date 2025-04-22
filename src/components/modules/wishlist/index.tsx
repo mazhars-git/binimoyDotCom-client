@@ -1,125 +1,78 @@
-"use client";
-import DeleteConfirmationModal from "@/components/ui/core/ABModal";
-import { ABTable } from "@/components/ui/core/ABTable";
-import { useUser } from "@/context/UserContext";
-import { deleteSingleWishlist } from "@/services/wishlist";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 import { TProduct } from "@/types";
-
-import { ColumnDef } from "@tanstack/react-table";
-import { CircleX, Eye } from "lucide-react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { toast } from "sonner";
+import React from "react";
+import { Eye } from "lucide-react";
+interface ManageWishlistProps {
+  products: TProduct[];
+}
 
-
-
-const ManageWishlist = ({ products }: { products: TProduct[] }) => {
-  const [isModalOpen, setModalOpen] = useState(false);
-  const [selectedId, setSelectedId] = useState<string | null>(null);
-  const router = useRouter();
-
-
-  const handleDelete = (id: string) => {
-    setSelectedId(id);
-    setModalOpen(true);
-  };
-
-  const handleDeleteConfirm = async () => {
-    try {
-      if (selectedId) {
-        const res = await deleteSingleWishlist(selectedId);
-        if (res.success) {
-          toast.success(res.message);
-          setModalOpen(false);
-          setSelectedId(null);
-        } else {
-          toast.error(res.message);
-        }
-      }
-    } catch (err: any) {
-      console.error(err?.message);
-    }
-  };
-  const columns: ColumnDef<TProduct>[] = [
-    {
-      accessorKey: "title",
-      header: "Product Name",
-      cell: ({ row }) => (
-        <div className="flex items-center space-x-3">
-          <Image
-            src={
-              row.original.images?.[0] ??
-              "https://psediting.websites.co.in/obaju-turquoise/img/product-placeholder.png"
-            }
-            alt={row.original.title}
-            width={40}
-            height={40}
-            className="w-8 h-8 rounded-full"
-          />
-
-          <span className="truncate">{row.original.title}</span>
-        </div>
-      ),
-    },
-    {
-      accessorKey: "condition",
-      header: "condition",
-      cell: ({ row }) => <span>{row.original.condition}</span>,
-    },
-    {
-      accessorKey: "category",
-      header: "Category",
-      cell: ({ row }) => <span>{row.original.category}</span>,
-    },
-    {
-      accessorKey: "category",
-      header: "Category",
-      cell: ({ row }) => <span>{row?.original?.category}</span>,
-    },
-    {
-      accessorKey: "price",
-      header: "Price",
-      cell: ({ row }) => <span>${row.original.price.toFixed(2)}</span>,
-    },
-    {
-      accessorKey: "status",
-      header: "Status",
-      cell: ({ row }) => <span>{row.original.status}</span>,
-    },
-    {
-      accessorKey: "action",
-      header: "Action",
-      cell: ({ row }) => (
-        <div className="flex items-center space-x-3">
-          <button
-            onClick={() => router.push(`/product/${row.original._id}`)}
-            className="text-gray-500 cursor-pointer hover:text-green-500"
-            title="View"
-          >
-            <Eye className="w-5 h-5" />
-          </button>
-
-          <button
-            className="text-gray-500 cursor-pointer hover:text-red-500"
-            title="Delete"
-            onClick={() => handleDelete(row?.original?._id)}
-          >
-            <CircleX className="w-5 h-5" />
-          </button>
-        </div>
-      ),
-    },
-  ];
+const ManageWishlist: React.FC<ManageWishlistProps> = ({ products }) => {
   return (
-    <div className="space-y-3">
-      <h1 className="text-xl font-bold">Manage Wishlist</h1>
-      <ABTable columns={columns} data={products || []} />
-      <DeleteConfirmationModal
-        isOpen={isModalOpen}
-        onOpenChange={setModalOpen}
-        onConfirm={handleDeleteConfirm}
-      />
+    <div className="grid gap-4 p-4 max-w-4xl mx-auto">
+      {products.map((product: TProduct) => (
+        <Card
+          key={product._id}
+          className="rounded-lg shadow-lg bg-white p-6 flex flex-col md:flex-row items-center justify-between w-full gap-4 transition-all hover:shadow-xl"
+        >
+          <div className="flex flex-col md:flex-row items-center justify-between w-full gap-4">
+            {/* Image section */}
+            <div className="flex-shrink-0">
+              <Image
+                // src={product?.images[0] || ""}
+                src={product.images[] || ""}
+                alt={product.title}
+                width={120}
+                height={120}
+                className="rounded-lg object-cover shadow-md"
+              />
+            </div>
+
+            {/* Info section */}
+            <div className="flex flex-col md:flex-row items-center justify-start gap-4 w-full">
+              <h3 className="text-xl font-semibold text-gray-800">
+                {product.title}
+              </h3>
+
+              {/* Price */}
+              <p className="text-lg text-gray-700">{product.price}</p>
+
+              {/* Stock */}
+              <p
+                className={cn(
+                  "text-sm font-medium",
+                  product.status === "available"
+                    ? "text-green-600"
+                    : "text-red-500"
+                )}
+              >
+                {product.status}
+              </p>
+
+              {/*  View Button with Eye Icon */}
+
+              <Button
+                variant="outline"
+                className="mt-4 md:mt-0 flex items-center gap-1 border-gray-300 text-gray-700 hover:text-blue-600 hover:border-gray-500 transition-colors"
+              >
+                <Eye className="w-4 h-4" />
+                View
+              </Button>
+
+
+              {/* Add to Cart button */}
+              <Button
+                className="mt-4 md:mt-0 py-2 px-4 text-white font-semibold rounded-lg bg-blue-600 hover:bg-blue-700 transition-all"
+                disabled={product.status !== "available"}
+              >
+                Add to Cart
+              </Button>
+            </div>
+          </div>
+        </Card>
+      ))}
     </div>
   );
 };
