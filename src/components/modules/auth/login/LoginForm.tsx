@@ -25,8 +25,10 @@ import Image from "next/image";
 import { CardFooter } from "@/components/ui/card";
 import { useRef } from "react";
 import { EyeClosed, EyeIcon } from "lucide-react";
+import { useTheme } from "next-themes";
 
 const LoginForm = () => {
+  const { theme } = useTheme();
   const form = useForm({
     resolver: zodResolver(loginSchema),
   });
@@ -140,7 +142,7 @@ const LoginForm = () => {
               ref={recaptchaRef}
               sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_CLIENT_KEY || ""}
               onChange={handleReCaptcha}
-              theme="dark"
+              theme={theme === "dark" ? "dark" : "light"}
             />
             <p
               role="button"

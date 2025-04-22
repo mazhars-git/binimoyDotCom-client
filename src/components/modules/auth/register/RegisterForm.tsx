@@ -56,13 +56,13 @@ const RegisterForm = () => {
     }
   };
   return (
-    <div className="border-1 bg-slate-50 border-gray-400 rounded-xl flex-grow max-w-md w-full p-5 space-y-5">
+    <div className="border-1 bg-slate-50 dark:bg-slate-800 border-gray-400 rounded-xl flex-grow max-w-md w-full p-5 space-y-5">
       <div className="flex items-center justify-center">
         <Image src={Logo} alt="Adol Bodol Logo" width={130} height={10} />
       </div>
       <div>
-        <h1 className="text-2xl font-bold text-center text-[#333]">Register</h1>
-        <h1 className="text-center text-[13px] font-md text-[#333]">
+        <h1 className="text-2xl font-bold text-center ">Register</h1>
+        <h1 className="text-center text-[13px] font-md ">
           Join Adol Bodol to access exclusive Gadget items!
         </h1>
       </div>
@@ -75,7 +75,11 @@ const RegisterForm = () => {
               <FormItem>
                 <FormLabel>Name</FormLabel>
                 <FormControl>
-                  <Input {...field} value={field.value || ""} />
+                  <Input
+                    {...field}
+                    value={field.value || ""}
+                    className="dark:bg-slate-50 dark:text-black"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -88,7 +92,12 @@ const RegisterForm = () => {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input type="email" {...field} value={field.value || ""} />
+                  <Input
+                    type="email"
+                    {...field}
+                    value={field.value || ""}
+                    className="dark:bg-slate-50 dark:text-black"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -102,7 +111,12 @@ const RegisterForm = () => {
               <FormItem>
                 <FormLabel>Phone Number</FormLabel>
                 <FormControl>
-                  <Input type="text" {...field} value={field.value || ""} />
+                  <Input
+                    type="text"
+                    {...field}
+                    value={field.value || ""}
+                    className="dark:bg-slate-50 dark:text-black"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -120,6 +134,7 @@ const RegisterForm = () => {
                       type={showPass ? "text" : "password"}
                       {...field}
                       value={field.value || ""}
+                      className="dark:bg-slate-50 dark:text-black"
                     />
                     <div
                       onClick={() => setShowPass(!showPass)}
@@ -139,7 +154,12 @@ const RegisterForm = () => {
               <FormItem>
                 <FormLabel>Confirm Password</FormLabel>
                 <FormControl>
-                  <Input type="password" {...field} value={field.value || ""} />
+                  <Input
+                    type="password"
+                    {...field}
+                    value={field.value || ""}
+                    className="dark:bg-slate-50 dark:text-black"
+                  />
                 </FormControl>
                 {passwordConfirm && password !== passwordConfirm ? (
                   <FormMessage> Password does not match </FormMessage>
@@ -153,15 +173,13 @@ const RegisterForm = () => {
           <Button
             disabled={Boolean(passwordConfirm && password !== passwordConfirm)}
             type="submit"
-            className="mt-5 w-full">
+            className="mt-5 w-full dark:text-white">
             {isSubmitting ? "Registering..." : "Register"}
           </Button>
         </form>
       </Form>
       <CardFooter className="flex justify-center items-center gap-1 text-center">
-        <p className="text-sm text-[#333] font-medium">
-          Already have an account?
-        </p>
+        <p className="text-sm  font-medium">Already have an account?</p>
         <Link
           href="/login"
           className="text-sm font-semibold text-[#D8A7B1] hover:text-red-400 hover:underline">
