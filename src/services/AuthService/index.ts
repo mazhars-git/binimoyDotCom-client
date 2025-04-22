@@ -165,3 +165,27 @@ export const resetPassword = async (token: string, userData: FieldValues) => {
     return Error(error);
   }
 };
+
+export const changeAccountStatus = async (
+  userData: FieldValues,
+  userId: string
+) => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_BASE_API}/users/change-status/${userId}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: (await cookies()).get("accessToken")!.value,
+        },
+        body: JSON.stringify(userData),
+        cache: "no-store",
+      }
+    );
+    const result = await res.json();
+    return result;
+  } catch (error: any) {
+    return Error(error);
+  }
+};

@@ -1,19 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getCurrentUser } from "./services/AuthService";
+import { IUser } from "./types";
 
 type Role = keyof typeof roleBasedPrivateRoutes;
 
 const authRoutes = ["/login", "/register"];
 
 const roleBasedPrivateRoutes = {
-  user: [/^\/dashboard(?!\/admin)/, /^\/cart/, /^\/messages/],
-  admin: [/^\/dashboard\/admin/],
+  user: [/^\/dashboard(?!\/admin)/, /^\/cart/, /^\/messages/, /^\/wishlist/],
+  admin: [/^\/dashboard\/admin/, /^\/cart/, /^\/messages/, /^\/wishlist/],
 };
 
 export const middleware = async (request: NextRequest) => {
   const { pathname } = request.nextUrl;
 
-  const userInfo = await getCurrentUser();
+  const userInfo = (await getCurrentUser()) as IUser;
 
   if (!userInfo) {
     if (authRoutes.includes(pathname)) {
@@ -40,10 +41,14 @@ export const middleware = async (request: NextRequest) => {
 
 export const config = {
   matcher: [
+    "/login",
     "/cart",
+    "/wishlist",
     "/dashboard",
     "/dashboard/:page",
     "/dashboard/profile",
+    "/dashboard/profile/change-password",
+    "/dashboard/profile/change-status",
     "/dashboard/listing",
     "/dashboard/listing/:page",
     "/dashboard/sales-history",
@@ -51,6 +56,9 @@ export const config = {
     "/messages",
     "/messages/:page",
     "/dashboard/admin",
+    "/dashboard/admin/profile",
+    "/dashboard/admin/profile/change-password",
+    "/dashboard/admin/profile/change-status",
     "/dashboard/admin/:page",
     "/dashboard/admin/user-management",
     "/dashboard/admin/user-management/:page",

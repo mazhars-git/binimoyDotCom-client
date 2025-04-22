@@ -8,6 +8,7 @@ import {
   List,
   Settings,
   SquareTerminal,
+  User,
 } from "lucide-react";
 
 import { NavMain } from "@/components/modules/dashboard/sidebar/nav-main";
@@ -22,10 +23,11 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
+import { useUser } from "@/context/UserContext";
 
 // This is sample data.
 const data = {
-  navMain: [
+  userNav: [
     {
       title: "Dashboard",
       url: "/dashboard",
@@ -48,11 +50,6 @@ const data = {
       icon: History,
     },
     {
-      title: "Wish List",
-      url: "/dashboard/wishlist",
-      icon: List,
-    },
-    {
       title: "Messages",
       url: "/messages",
       icon: Bot,
@@ -68,13 +65,57 @@ const data = {
         },
         {
           title: "Change Password",
-          url: "#",
+          url: "/dashboard/profile/change-password",
+        },
+        {
+          title: "Account Settings",
+          url: "/dashboard/profile/change-status",
+        },
+      ],
+    },
+  ],
+  adminNav: [
+    {
+      title: "Dashboard",
+      url: "/dashboard/admin",
+      icon: SquareTerminal,
+      isActive: true,
+    },
+    {
+      title: "Listings Management",
+      url: "/dashboard/admin/listings",
+      icon: List,
+    },
+    {
+      title: "User Management",
+      url: "/dashboard/admin/user-management",
+      icon: User,
+    },
+
+    {
+      title: "Settings",
+      url: "/dashboard/admin/profile",
+      icon: Settings,
+      items: [
+        {
+          title: "Profile",
+          url: "/dashboard/admin/profile",
+        },
+        {
+          title: "Change Password",
+          url: "/dashboard/admin/profile/change-password",
+        },
+        {
+          title: "Account Settings",
+          url: "/dashboard/admin/profile/change-status",
         },
       ],
     },
   ],
 };
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { user } = useUser();
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
@@ -94,7 +135,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain
+          items={user?.role === "admin" ? data.adminNav : data.userNav}
+        />
       </SidebarContent>
       <SidebarFooter>
         <NavUser />

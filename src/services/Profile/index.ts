@@ -24,11 +24,13 @@ export const getSingleUser = async (userId: string) => {
   }
 };
 
-
-export const updateSingleUser = async (userId: string, data: FieldValues) => {
+export const updateUserProfile = async (
+  userData: FieldValues,
+  userId: string
+) => {
   try {
     const accessToken = (await cookies()).get("accessToken")?.value;
-    
+
     if (!accessToken) {
       throw new Error("No authentication token found");
     }
@@ -42,11 +44,11 @@ export const updateSingleUser = async (userId: string, data: FieldValues) => {
       {
         method: "PUT",
         headers: {
-         "Authorization": `Bearer ${accessToken}`,
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          Authorization: accessToken,
         },
-        body: JSON.stringify(data),
-        cache: "no-store"
+        body: JSON.stringify(userData),
+        cache: "no-store",
       }
     );
 
@@ -59,7 +61,40 @@ export const updateSingleUser = async (userId: string, data: FieldValues) => {
     revalidateTag("USER");
     return result;
   } catch (error: any) {
+    return new Error(error);
+  }
+};
 
+export const changePassword = async (userData: FieldValues) => {
+  try {
+    const accessToken = (await cookies()).get("accessToken")?.value;
+
+    if (!accessToken) {
+      throw new Error("No authentication token found");
+    }
+
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_BASE_API}/auth/change-password`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: accessToken,
+        },
+        body: JSON.stringify(userData),
+        cache: "no-store",
+      }
+    );
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.message || "Change password failed");
+    }
+    const result = res.json();
+
+    revalidateTag("USER");
+    return result;
+  } catch (error: any) {
     return new Error(error);
   }
 };
