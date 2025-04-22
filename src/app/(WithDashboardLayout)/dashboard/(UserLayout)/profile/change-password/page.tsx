@@ -1,6 +1,6 @@
 import ChangePasswordForm from "@/components/modules/profile/ChangePasswordForm";
 
-const ChangePassword = async () => {
+const ChangePasswordPage = async () => {
   return (
     <div className="flex justify-center items-center">
       <ChangePasswordForm />
@@ -8,4 +8,4 @@ const ChangePassword = async () => {
   );
 };
 
-export default ChangePassword;
+export default ChangePasswordPage;
