@@ -74,8 +74,6 @@ const LoginForm = () => {
         }
       } else {
         toast.error(res?.message);
-        setForgetPassword(res?.message);
-        setReCaptchaStatus(false);
       }
     } catch (error: any) {
       console.log(error);
