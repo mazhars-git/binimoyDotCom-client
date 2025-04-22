@@ -22,7 +22,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { useUser } from "@/context/UserContext";
 import Logo from "@/assets/Logo-adol-removebg-preview.png";
 import Image from "next/image";
-import { Card, CardFooter } from "@/components/ui/card";
+import { CardFooter } from "@/components/ui/card";
 
 const LoginForm = () => {
   const form = useForm({
@@ -124,8 +124,7 @@ const LoginForm = () => {
           <Button
             disabled={!reCaptchaStatus}
             type="submit"
-            className="mt-5 w-full"
-          >
+            className="mt-5 w-full">
             {isSubmitting ? "Logging..." : "Login"}
           </Button>
         </form>
@@ -136,8 +135,7 @@ const LoginForm = () => {
             Don&apos;t have an account?{" "}
             <Link
               href="/register"
-              className="text-sm font-semibold text-[#D8A7B1] hover:text-red-400 hover:underline"
-            >
+              className="text-sm font-semibold text-[#D8A7B1] hover:text-red-400 hover:underline">
               Register
             </Link>
           </p>
@@ -147,8 +145,7 @@ const LoginForm = () => {
             <p>{forgetPassword}</p>
             <Link
               href="/forgot-password"
-              className="text-sm font-semibold text-[#f19a9a] hover:text-red-500 hover:underline"
-            >
+              className="text-sm font-semibold text-[#f19a9a] hover:text-red-500 hover:underline">
               Forgot Password?
             </Link>
           </div>
