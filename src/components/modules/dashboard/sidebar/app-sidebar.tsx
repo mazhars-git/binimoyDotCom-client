@@ -107,7 +107,7 @@ const data = {
         },
         {
           title: "Account Settings",
-          url: "/dashboard/profile/change-status",
+          url: "/dashboard/admin/profile/change-status",
         },
       ],
     },
