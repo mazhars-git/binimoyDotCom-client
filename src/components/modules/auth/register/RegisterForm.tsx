@@ -56,11 +56,11 @@ const RegisterForm = () => {
     }
   };
   return (
-    <div className="border-1 bg-slate-50 dark:bg-slate-800 border-gray-400 rounded-xl flex-grow max-w-md w-full p-5 space-y-5">
+    <div className="border-1 bg-slate-50 dark:bg-slate-800 border-gray-400 rounded-xl flex-grow max-w-md w-full p-5">
       <div className="flex items-center justify-center">
         <Image src={Logo} alt="Adol Bodol Logo" width={130} height={10} />
       </div>
-      <div>
+      <div className="mb-5">
         <h1 className="text-2xl font-bold text-center ">Register</h1>
         <h1 className="text-center text-[13px] font-md ">
           Join Adol Bodol to access exclusive Gadget items!
