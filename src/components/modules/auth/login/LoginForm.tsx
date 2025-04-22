@@ -23,6 +23,8 @@ import { useUser } from "@/context/UserContext";
 import Logo from "@/assets/Logo-adol-removebg-preview.png";
 import Image from "next/image";
 import { CardFooter } from "@/components/ui/card";
+import { useRef } from "react";
+import { EyeClosed, EyeIcon } from "lucide-react";
 
 const LoginForm = () => {
   const form = useForm({
@@ -33,6 +35,8 @@ const LoginForm = () => {
 
   const [reCaptchaStatus, setReCaptchaStatus] = useState(false);
   const [forgetPassword, setForgetPassword] = useState(null);
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
+  const [showPass, setShowPass] = useState(false);
 
   const searchParams = useSearchParams();
   const redirect = searchParams.get("redirectPath");
@@ -108,17 +112,40 @@ const LoginForm = () => {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input type="password" {...field} value={field.value || ""} />
+                  <div className="relative">
+                    <Input
+                      type={showPass ? "text" : "password"}
+                      {...field}
+                      value={field.value || ""}
+                    />
+                    <div
+                      onClick={() => setShowPass(!showPass)}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer text-black">
+                      {showPass ? <EyeIcon /> : <EyeClosed />}
+                    </div>
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <div className="flex justify-center items-center">
+          <div className="flex justify-between items-center">
             <ReCAPTCHA
+              ref={recaptchaRef}
               sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_CLIENT_KEY || ""}
               onChange={handleReCaptcha}
             />
+            <p
+              role="button"
+              onClick={() => {
+                setForgetPassword(null);
+                setReCaptchaStatus(false);
+                form.reset();
+                recaptchaRef.current?.reset();
+              }}
+              className="text-sm font-semibold hover:underline hover:text-red-500">
+              Try again
+            </p>
           </div>
 
           <Button
@@ -140,16 +167,18 @@ const LoginForm = () => {
             </Link>
           </p>
         </div>
-        {forgetPassword && (
-          <div className="text-sm text-red-500 font-semibold mt-2">
-            <p>{forgetPassword}</p>
-            <Link
-              href="/forgot-password"
-              className="text-sm font-semibold text-[#f19a9a] hover:text-red-500 hover:underline">
-              Forgot Password?
-            </Link>
-          </div>
-        )}
+        <div>
+          {forgetPassword && (
+            <div className="text-sm text-red-500 font-semibold mt-2">
+              <p>{forgetPassword}</p>
+              <Link
+                href="/forgot-password"
+                className="text-sm font-semibold text-[#f19a9a] hover:text-red-500 hover:underline">
+                Forgot Password?
+              </Link>
+            </div>
+          )}
+        </div>
       </CardFooter>
     </div>
   );
