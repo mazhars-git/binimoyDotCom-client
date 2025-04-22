@@ -21,8 +21,11 @@ import { useUser } from "@/context/UserContext";
 import Logo from "@/assets/Logo-adol-removebg-preview.png";
 import Image from "next/image";
 import { CardFooter } from "@/components/ui/card";
+import { EyeClosed, EyeIcon } from "lucide-react";
+import { useState } from "react";
 
 const RegisterForm = () => {
+  const [showPass, setShowPass] = useState(false);
   const form = useForm({
     resolver: zodResolver(registrationSchema),
   });
@@ -35,11 +38,12 @@ const RegisterForm = () => {
   const password = form.watch("password");
   const passwordConfirm = form.watch("passwordConfirm");
 
-  const { setIsLoading } = useUser();
+  const { setIsLoading, refreshUser } = useUser();
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
       const res = await registerUser(data);
+      await refreshUser();
       setIsLoading(true);
       if (res?.success) {
         toast.success(res?.message);
@@ -57,6 +61,7 @@ const RegisterForm = () => {
         <Image src={Logo} alt="Adol Bodol Logo" width={130} height={10} />
       </div>
       <div>
+        <h1 className="text-2xl font-bold text-center text-[#333]">Register</h1>
         <h1 className="text-center text-[13px] font-md text-[#333]">
           Join Adol Bodol to access exclusive Gadget items!
         </h1>
@@ -110,7 +115,18 @@ const RegisterForm = () => {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input type="password" {...field} value={field.value || ""} />
+                  <div className="relative">
+                    <Input
+                      type={showPass ? "text" : "password"}
+                      {...field}
+                      value={field.value || ""}
+                    />
+                    <div
+                      onClick={() => setShowPass(!showPass)}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer text-black">
+                      {showPass ? <EyeIcon /> : <EyeClosed />}
+                    </div>
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -137,8 +153,7 @@ const RegisterForm = () => {
           <Button
             disabled={Boolean(passwordConfirm && password !== passwordConfirm)}
             type="submit"
-            className="mt-5 w-full"
-          >
+            className="mt-5 w-full">
             {isSubmitting ? "Registering..." : "Register"}
           </Button>
         </form>
@@ -149,8 +164,7 @@ const RegisterForm = () => {
         </p>
         <Link
           href="/login"
-          className="text-sm font-semibold text-[#D8A7B1] hover:text-red-400 hover:underline"
-        >
+          className="text-sm font-semibold text-[#D8A7B1] hover:text-red-400 hover:underline">
           Login
         </Link>
       </CardFooter>
