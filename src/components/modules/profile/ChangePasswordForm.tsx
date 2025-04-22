@@ -107,7 +107,10 @@ export const UserProfileForm = () => {
 
           {/* Submit Button */}
           <div className="flex justify-end gap-4 mt-6">
-            <Button type="submit" disabled={isSubmitting}>
+            <Button
+              className="dark:text-slate-50"
+              type="submit"
+              disabled={isSubmitting}>
               {isSubmitting ? "Changing..." : "Change Password"}
             </Button>
           </div>

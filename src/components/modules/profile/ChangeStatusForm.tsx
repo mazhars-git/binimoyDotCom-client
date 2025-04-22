@@ -115,7 +115,10 @@ export const ChangeStatusForm: React.FC<UserProfileProps> = ({ user }) => {
 
           {/* Submit Button */}
           <div className="flex justify-end gap-4 mt-6">
-            <Button type="submit" disabled={isSubmitting}>
+            <Button
+              className="dark:text-white"
+              type="submit"
+              disabled={isSubmitting}>
               {isSubmitting
                 ? "Updating..."
                 : user?.status === "active"
