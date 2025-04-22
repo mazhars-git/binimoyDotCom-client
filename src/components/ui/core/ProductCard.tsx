@@ -19,7 +19,7 @@ import { useUser } from "@/context/UserContext";
 import { createWishlist } from "@/services/wishlist";
 
 import { TProduct } from "@/types";
-import { Heart, Star } from "lucide-react";
+import { Heart, ShoppingBag, Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -27,8 +27,6 @@ import { toast } from "sonner";
 
 const ProductCard = ({ product }: { product: TProduct }) => {
   const { user, userDetail, setIsLoading } = useUser();
-
-
 
   const router = useRouter();
 
@@ -59,14 +57,14 @@ const ProductCard = ({ product }: { product: TProduct }) => {
   };
   return (
     <Card className="p-3">
-      <CardHeader className="relative p-0 h-48">
+      <CardHeader className="relative p-0 h-48 items-center justify-center">
         <Image
           src={
             product?.images?.[0] ||
             "https://psediting.websites.co.in/obaju-turquoise/img/product-placeholder.png"
           }
-          width={500}
-          height={500}
+          width={240}
+          height={50}
           alt="product image"
           className="rounded-sm h-48 object-cover"
         />
@@ -75,7 +73,7 @@ const ProductCard = ({ product }: { product: TProduct }) => {
             {product.status}
           </div>
         ) : (
-          <div className="absolute left-2 top-2 bg-secondary text-white px-2 rounded-full">
+          <div className="absolute left-2 top-2 bg-green-600 text-white px-2 rounded-full">
             {product.status}
           </div>
         )}
@@ -83,7 +81,7 @@ const ProductCard = ({ product }: { product: TProduct }) => {
 
       <CardContent className=" p-0 mt-2">
         <Link href={`/products/${product?._id}`} passHref>
-          <CardTitle className="font-semibold cursor-pointer text-sm">
+          <CardTitle className="font-bold cursor-pointer text-lg">
             {product?.title.length > 30
               ? product?.title?.slice(0, 30) + "..."
               : product?.title}
@@ -111,26 +109,55 @@ const ProductCard = ({ product }: { product: TProduct }) => {
             </Button>
           </Link>
 
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  disabled={product?.status === "sold" ? true : false}
-                  className="w-8 h-8 p-0 flex items-center justify-center rounded-full cursor-pointer text-muted-foreground border-muted-foreground hover:text-secondary hover:border-secondary"
-                  onClick={() =>
-                    handleAddToWishList(product?._id, userDetail?._id as string)
-                  }
-                >
-                  <Heart />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Add to Wishlist</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <div className="flex gap-2">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    disabled={product?.status === "sold" ? true : false}
+                    className="w-8 h-8 p-0 flex items-center justify-center rounded-full cursor-pointer text-muted-foreground border-muted-foreground hover:text-secondary hover:bg-gray-400"
+                    onClick={() =>
+                      handleAddToWishList(
+                        product?._id,
+                        userDetail?._id as string
+                      )
+                    }
+                  >
+                    <Heart />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Add to Wishlist</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    disabled={product?.status === "sold" ? true : false}
+                    className="w-8 h-8 p-0 flex items-center justify-center rounded-full cursor-pointer text-muted-foreground border-muted-foreground hover:text-secondary hover:bg-gray-400"
+                    onClick={() =>
+                      handleAddToWishList(
+                        product?._id,
+                        userDetail?._id as string
+                      )
+                    }
+                  >
+                    <ShoppingBag />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Add to Cart</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
         </div>
       </CardFooter>
     </Card>
