@@ -13,8 +13,11 @@ const UserProfile = async () => {
   const currentUser = await getCurrentUserDetails();
 
   return (
-    <div className="flex justify-center items-center">
-      <UserProfileForm user={currentUser?.data} />
+    <div>
+      <h1 className="text-2xl font-bold mb-6">User Profile</h1>
+      <div className="flex justify-center items-center">
+        <UserProfileForm user={currentUser?.data} />
+      </div>
     </div>
   );
 };
