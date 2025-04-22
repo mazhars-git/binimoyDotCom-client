@@ -14,7 +14,7 @@ const UserProfile = async () => {
 
   return (
     <div className="flex justify-center items-center">
-      <UserProfileForm user={currentUser.data} />
+      <UserProfileForm user={currentUser?.data} />
     </div>
   );
 };
