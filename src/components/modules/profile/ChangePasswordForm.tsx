@@ -76,7 +76,7 @@ export const UserProfileForm = () => {
                   <FormLabel>Old Password*</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Enter your name"
+                      placeholder="Enter your old password"
                       {...field}
                       className="dark:bg-slate-200 placeholder:dark:text-slate-400 dark:text-slate-900 font-medium"
                     />
@@ -94,7 +94,7 @@ export const UserProfileForm = () => {
                   <FormLabel>New Password*</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Enter your name"
+                      placeholder="Enter your new password"
                       {...field}
                       className="dark:bg-slate-200 placeholder:dark:text-slate-400 dark:text-slate-900 font-medium"
                     />
