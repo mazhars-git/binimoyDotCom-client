@@ -19,13 +19,14 @@ import { protectedRoutes } from "@/constants";
 import { ModeToggle } from "../ui/mode-toggle";
 
 export default function Navbar() {
-  const { user, userDetail, setIsLoading } = useUser();
+  const { user, userDetail, setIsLoading, refreshUser } = useUser();
   const pathname = usePathname();
   const router = useRouter();
 
-  const handleLogOut = () => {
+  const handleLogOut = async () => {
     logout();
     setIsLoading(true);
+    await refreshUser();
     if (protectedRoutes.some((route: any) => pathname.match(route))) {
       router.push("/");
     }
@@ -41,15 +42,23 @@ export default function Navbar() {
         <nav className="flex justify-center items-center gap-2">
           {user?.email ? (
             <>
-              <Link href="/wishlist">
-                <Heart />
-              </Link>
-              <Link href="/cart">
-                <ShoppingBag />
-              </Link>
-              <Link href="/messages">
-                <MessageCircle />
-              </Link>
+              <div className="flex gap-4">
+                <Link href="/wishlist">
+                  <span className="cursor-pointer">
+                    <Heart />
+                  </span>
+                </Link>
+                <Link href="/cart">
+                  <span className="cursor-pointer">
+                    <ShoppingBag />
+                  </span>
+                </Link>
+                <Link href="/messages">
+                  <span className="cursor-pointer">
+                    <MessageCircle />
+                  </span>
+                </Link>
+              </div>
               <DropdownMenu>
                 <DropdownMenuTrigger>
                   <Avatar>
@@ -66,29 +75,23 @@ export default function Navbar() {
                   </p>
 
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem>
-                    <Link
-                      href={`${
-                        user?.role === "admin"
-                          ? "/dashboard/admin/profile"
-                          : "/dashboard/profile"
-                      }`}>
-                      Profile
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Link
-                      href={`${
-                        user?.role === "admin"
-                          ? "/dashboard/admin"
-                          : "/dashboard"
-                      }`}>
-                      Dashboard
-                    </Link>
-                  </DropdownMenuItem>
+                  <Link
+                    href={`${
+                      user?.role === "admin"
+                        ? "/dashboard/admin/profile"
+                        : "/dashboard/profile"
+                    }`}>
+                    <DropdownMenuItem>Profile</DropdownMenuItem>
+                  </Link>
+                  <Link
+                    href={`${
+                      user?.role === "admin" ? "/dashboard/admin" : "/dashboard"
+                    }`}>
+                    <DropdownMenuItem>Dashboard</DropdownMenuItem>
+                  </Link>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
-                    className="bg-red-100 cursor-pointer"
+                    className="bg-red-100 dark:text-black cursor-pointer dark:hover:text-white"
                     onClick={handleLogOut}>
                     <LogOut />
                     <span>Log Out</span>
