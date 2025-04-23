@@ -1,12 +1,11 @@
-import Spinner from "@/components/ui/core/spinner";
-import React from "react";
+import "./loading.css";
 
-const loading = () => {
+const Loading = () => {
   return (
     <div className="flex justify-center items-center h-screen">
-      <Spinner size="icon" />
+      <div className="spinner"></div>
     </div>
   );
 };
 
-export default loading;
+export default Loading;
