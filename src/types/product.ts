@@ -62,12 +62,13 @@ export type TProduct = {
   updatedAt?: Date;
 };
 export interface IProduct {
-  _id?: string;
+  _id: string;
   title: string;
   description: string;
   price: number;
   condition: string;
   quantity: number;
+  orderQuantity: number;
   category: string;
   images: string[];
   location: string;

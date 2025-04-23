@@ -1,7 +1,10 @@
+"use client";
 import { Button } from "@/components/ui/button";
-import React from "react";
+import { subTotalSelector } from "@/redux/features/cartSlice";
+import { useAppSelector } from "@/redux/hook";
 
 export default function PaymentDetails() {
+  const subTotal = useAppSelector(subTotalSelector);
   return (
     <div className="border-2 border-gray bg-background brightness-105 rounded-md col-span-4 h-fit p-5">
       <h1 className="text-2xl font-bold">Payment Details</h1>
@@ -9,7 +12,7 @@ export default function PaymentDetails() {
         <div className="flex justify-between">
           <p className="text-gray-500 ">Subtotal</p>
           {/* <p className="font-semibold">{currencyFormatter(subTotal)}</p> */}
-          <p className="font-semibold">00</p>
+          <p className="font-semibold">{subTotal}</p>
         </div>
         <div className="flex justify-between">
           <p className="text-gray-500 ">Shipment Cost</p>
