@@ -17,6 +17,8 @@ import { useUser } from "@/context/UserContext";
 import { usePathname, useRouter } from "next/navigation";
 import { protectedRoutes } from "@/constants";
 import { ModeToggle } from "../ui/mode-toggle";
+import Image from "next/image";
+import Logo from "@/assets/Logo-adol-removebg-preview.png";
 
 export default function Navbar() {
   const { user, userDetail, setIsLoading, refreshUser } = useUser();
@@ -36,10 +38,25 @@ export default function Navbar() {
     <header className="border-b bg-background w-full sticky top-0 z-10">
       <div className="container flex justify-between items-center mx-auto h-16 px-5">
         <Link href="/">
-          <h1 className="text-2xl font-black flex items-center">AdolBodol</h1>
+          <Image src={Logo} width={100} height={10} alt="Logo" />
         </Link>
 
-        <nav className="flex justify-center items-center gap-2">
+        <nav className="hidden md:flex gap-6 text-sm font-medium">
+          <Link href="/" className="hover:underline">
+            Home
+          </Link>
+          <Link href="/products" className="hover:underline">
+            Products
+          </Link>
+          <Link href="/blog" className="hover:underline">
+            Blog
+          </Link>
+          <Link href="/contact" className="hover:underline">
+            Contact us
+          </Link>
+        </nav>
+
+        <nav className="flex items-center gap-2">
           {user?.email ? (
             <>
               <div className="flex gap-4">
@@ -73,26 +90,28 @@ export default function Navbar() {
                   <p className="pl-2 text-sm font-semibold">
                     {userDetail?.name}
                   </p>
-
                   <DropdownMenuSeparator />
                   <Link
                     href={`${
                       user?.role === "admin"
                         ? "/dashboard/admin/profile"
                         : "/dashboard/profile"
-                    }`}>
+                    }`}
+                  >
                     <DropdownMenuItem>Profile</DropdownMenuItem>
                   </Link>
                   <Link
                     href={`${
                       user?.role === "admin" ? "/dashboard/admin" : "/dashboard"
-                    }`}>
+                    }`}
+                  >
                     <DropdownMenuItem>Dashboard</DropdownMenuItem>
                   </Link>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
                     className="bg-red-100 dark:text-black cursor-pointer dark:hover:text-white"
-                    onClick={handleLogOut}>
+                    onClick={handleLogOut}
+                  >
                     <LogOut />
                     <span>Log Out</span>
                   </DropdownMenuItem>
@@ -106,7 +125,6 @@ export default function Navbar() {
               </Button>
             </Link>
           )}
-
           <ModeToggle />
         </nav>
       </div>
