@@ -9,12 +9,12 @@ export const metadata: Metadata = {
     "View and manage your personal information, account settings, and activity on AdolBodol — your trusted platform for buying and selling second-hand items.",
 };
 
-const UserProfile = async () => {
+const AdminProfile = async () => {
   const currentUser = await getCurrentUserDetails();
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-6">User Profile</h1>
+      <h1 className="text-2xl font-bold mb-6">Admin Profile</h1>
       <div className="flex justify-center items-center">
         <UserProfileForm user={currentUser?.data} />
       </div>
@@ -22,4 +22,4 @@ const UserProfile = async () => {
   );
 };
 
-export default UserProfile;
+export default AdminProfile;

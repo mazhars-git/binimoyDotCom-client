@@ -2,7 +2,7 @@
 
 import { Button } from "../ui/button";
 import Link from "next/link";
-import { LogOut, MessageCircle } from "lucide-react";
+import { Heart, LogOut, MessageCircle, ShoppingBag } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,15 +16,17 @@ import { logout } from "@/services/AuthService";
 import { useUser } from "@/context/UserContext";
 import { usePathname, useRouter } from "next/navigation";
 import { protectedRoutes } from "@/constants";
+import { ModeToggle } from "../ui/mode-toggle";
 
 export default function Navbar() {
-  const { user, userDetail, setIsLoading } = useUser();
+  const { user, userDetail, setIsLoading, refreshUser } = useUser();
   const pathname = usePathname();
   const router = useRouter();
 
-  const handleLogOut = () => {
+  const handleLogOut = async () => {
     logout();
     setIsLoading(true);
+    await refreshUser();
     if (protectedRoutes.some((route: any) => pathname.match(route))) {
       router.push("/");
     }
@@ -40,42 +42,57 @@ export default function Navbar() {
         <nav className="flex justify-center items-center gap-2">
           {user?.email ? (
             <>
-              <Link href="/messages">
-                <MessageCircle />
-              </Link>
+              <div className="flex gap-4">
+                <Link href="/wishlist">
+                  <span className="cursor-pointer">
+                    <Heart />
+                  </span>
+                </Link>
+                <Link href="/cart">
+                  <span className="cursor-pointer">
+                    <ShoppingBag />
+                  </span>
+                </Link>
+                <Link href="/messages">
+                  <span className="cursor-pointer">
+                    <MessageCircle />
+                  </span>
+                </Link>
+              </div>
               <DropdownMenu>
                 <DropdownMenuTrigger>
                   <Avatar>
-                    <AvatarImage src="https://github.com/shadcn.png" />
+                    <AvatarImage
+                      src={userDetail?.photo || "https://github.com/shadcn.png"}
+                    />
                     <AvatarFallback>User</AvatarFallback>
                   </Avatar>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-56" align="end">
                   <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                  <DropdownMenuLabel>
-                    {"Name: " + userDetail?.name}
-                  </DropdownMenuLabel>
-                  <DropdownMenuLabel>
-                    {"Email: " + user?.email}
-                  </DropdownMenuLabel>
+                  <p className="pl-2 text-sm font-semibold">
+                    {userDetail?.name}
+                  </p>
+
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem>Profile</DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Link
-                      href={`${
-                        user?.role === "admin"
-                          ? "/dashboard/admin"
-                          : "/dashboard"
-                      }`}
-                    >
-                      Dashboard
-                    </Link>
-                  </DropdownMenuItem>
+                  <Link
+                    href={`${
+                      user?.role === "admin"
+                        ? "/dashboard/admin/profile"
+                        : "/dashboard/profile"
+                    }`}>
+                    <DropdownMenuItem>Profile</DropdownMenuItem>
+                  </Link>
+                  <Link
+                    href={`${
+                      user?.role === "admin" ? "/dashboard/admin" : "/dashboard"
+                    }`}>
+                    <DropdownMenuItem>Dashboard</DropdownMenuItem>
+                  </Link>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
-                    className="bg-red-100 cursor-pointer"
-                    onClick={handleLogOut}
-                  >
+                    className="bg-red-100 dark:text-black cursor-pointer dark:hover:text-white"
+                    onClick={handleLogOut}>
                     <LogOut />
                     <span>Log Out</span>
                   </DropdownMenuItem>
@@ -89,6 +106,8 @@ export default function Navbar() {
               </Button>
             </Link>
           )}
+
+          <ModeToggle />
         </nav>
       </div>
     </header>
