@@ -23,14 +23,15 @@ import { protectedRoutes } from "@/constants";
 
 export function NavUser() {
   const { isMobile } = useSidebar();
-  const { user, userDetail, setIsLoading } = useUser();
+  const { user, userDetail, setIsLoading, refreshUser } = useUser();
 
   const router = useRouter();
   const pathname = usePathname();
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     logout();
     setIsLoading(true);
+    await refreshUser();
 
     if (protectedRoutes.some((route) => pathname.match(route))) {
       router.push("/");

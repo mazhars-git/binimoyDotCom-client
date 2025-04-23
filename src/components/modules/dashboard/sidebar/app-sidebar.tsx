@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import {
-  Bot,
   History,
   Home,
   List,
@@ -48,11 +47,6 @@ const data = {
       title: "Purchase History",
       url: "/dashboard/purchase-history",
       icon: History,
-    },
-    {
-      title: "Messages",
-      url: "/messages",
-      icon: Bot,
     },
     {
       title: "Settings",

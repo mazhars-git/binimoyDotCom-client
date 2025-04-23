@@ -1,4 +1,4 @@
-import ContactSection from "@/components/modules/home/ContactSection";
+import ContactSection from "@/app/(WithCommonLayout)/contact/page";
 import FeaturedProducts from "@/components/modules/home/FeaturedProducts";
 import FeatureSection from "@/components/modules/home/FeatureSection";
 import HeroSection from "@/components/modules/home/HeroSection/index";

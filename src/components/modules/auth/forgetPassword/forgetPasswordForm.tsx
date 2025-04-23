@@ -45,13 +45,13 @@ const ForgetPasswordForm = () => {
     }
   };
   return (
-    <div className="border-1 border-gray-300 bg-slate-50 rounded-xl flex-grow max-w-md w-full p-5">
+    <div className="border-1 border-gray-300 bg-slate-50 dark:bg-slate-800 rounded-xl flex-grow max-w-md w-full p-5">
       <div className="flex items-center justify-center">
         <Image src={Logo} alt="Adol Bodol Logo" width={130} height={10} />
       </div>
       <div className="mb-5">
-        <h1 className="text-2xl font-bold text-[#333]">Forget Password</h1>
-        <h4 className="text-[13px] font-md text-[#333]">
+        <h1 className="text-2xl font-bold">Forget Password</h1>
+        <h4 className="text-[13px] font-md">
           Enter your email address and we will send you a link to reset your
           password.
         </h4>
@@ -63,16 +63,22 @@ const ForgetPasswordForm = () => {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel>Your Account Valid Email</FormLabel>
                 <FormControl>
-                  <Input type="email" {...field} value={field.value || ""} />
+                  <Input
+                    type="email"
+                    {...field}
+                    value={field.value || ""}
+                    placeholder="Enter your email"
+                    className="dark:bg-slate-700"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
 
-          <Button type="submit" className="mt-5 w-full">
+          <Button type="submit" className="mt-5 w-full dark:text-white">
             {isSubmitting ? "Sending..." : "Send Reset Link"}
           </Button>
         </form>
