@@ -19,7 +19,7 @@ import { addProduct } from "@/redux/features/cartSlice";
 import { useAppDispatch } from "@/redux/hook";
 import { createWishlist } from "@/services/wishlist";
 
-import { IProduct, TProduct } from "@/types";
+import { TProduct } from "@/types";
 import { Heart, ShoppingBag, Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -109,7 +109,7 @@ const ProductCard = ({ product }: { product: TProduct }) => {
 
       <CardFooter className="block p-0">
         <div className="flex gap-2 items-center justify-between">
-          <Link href={`/product/${product._id}`}>
+          <Link href={`/products/${product._id}`}>
             <Button size="sm" className="rounded-full cursor-pointer">
               View Details
             </Button>
