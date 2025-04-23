@@ -43,7 +43,7 @@ export default function FAQSection() {
   );
 
   return (
-    <section className="bg-white dark:bg-gray-900 px-6 py-12">
+    <section className="px-6 py-20">
       <div className="max-w-4xl mx-auto">
         <h2 className="text-3xl font-bold text-blue-600 mb-4">FAQs</h2>
         <p className="text-gray-600 dark:text-gray-300 mb-8">Got questions about buying or selling gadgets? We’ve got you covered.</p>
@@ -65,7 +65,7 @@ export default function FAQSection() {
                 onClick={() => toggleFAQ(index)}
                 className="flex justify-between items-center w-full px-4 py-3 text-left bg-blue-50 dark:bg-gray-800 hover:bg-blue-100 dark:hover:bg-gray-700 focus:outline-none"
               >
-                <span className="text-blue-700 font-medium dark:text-blue-400">{faq.question}</span>
+                <span className="font-medium">{faq.question}</span>
                 <svg
                   className={`w-5 h-5 text-blue-600 transition-transform duration-200 ${
                     openIndex === index ? 'rotate-45' : ''
@@ -91,8 +91,8 @@ export default function FAQSection() {
 
         {/* Need Help*/}
         <div className="mt-12 bg-blue-100 dark:bg-gray-800 p-6 rounded-lg text-center">
-          <h3 className="text-xl font-semibold text-blue-800 dark:text-blue-400 mb-2">Need more help?</h3>
-          <p className="text-gray-700 dark:text-gray-300 mb-4">
+          <h3 className="text-xl font-semibold mb-2">Need more help?</h3>
+          <p className="mb-4">
             Can’t find your answer? Our support team is here to help you anytime.
           </p>
           <a

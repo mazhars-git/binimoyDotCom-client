@@ -2,7 +2,7 @@
 
 import { Button } from "../ui/button";
 import Link from "next/link";
-import { Heart, LogOut, MessageCircle, ShoppingBag } from "lucide-react";
+import { Heart, LogOut, ShoppingBag } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -51,7 +51,7 @@ export default function Navbar() {
           <Link href="/blog" className="hover:underline">
             Blog
           </Link>
-          <Link href="/contact" className="hover:underline">
+          <Link href="/about" className="hover:underline">
             About us
           </Link>
           <Link href="/contact" className="hover:underline">
@@ -71,11 +71,6 @@ export default function Navbar() {
                 <Link href="/cart">
                   <span className="cursor-pointer">
                     <ShoppingBag />
-                  </span>
-                </Link>
-                <Link href="/messages">
-                  <span className="cursor-pointer">
-                    <MessageCircle />
                   </span>
                 </Link>
               </div>
