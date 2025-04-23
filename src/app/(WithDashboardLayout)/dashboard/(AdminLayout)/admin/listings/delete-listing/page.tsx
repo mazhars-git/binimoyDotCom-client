@@ -1,4 +1,4 @@
-import AdminProductDeletingPage from "@/components/modules/listings/DeleteListingForm";
+import AdminProductDeletingPage from "@/components/modules/listings/AdminDeleteListing";
 
 const deletingListingPage = () => {
   return (
