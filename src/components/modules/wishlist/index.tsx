@@ -22,7 +22,7 @@ const ManageWishlist: React.FC<ManageWishlistProps> = ({ products }) => {
             <div className="flex-shrink-0">
               <Image
                 // src={product?.images[0] || ""}
-                src={product.images[] || ""}
+                src={product.images[0] || ""}
                 alt={product.title}
                 width={120}
                 height={120}
@@ -60,7 +60,6 @@ const ManageWishlist: React.FC<ManageWishlistProps> = ({ products }) => {
                 <Eye className="w-4 h-4" />
                 View
               </Button>
-
 
               {/* Add to Cart button */}
               <Button
