@@ -1,10 +1,13 @@
+import Cart from "@/components/modules/cart/Cart";
+import RUContainer from "@/components/ui/core/RUContainer";
+
 const CartPage = () => {
   return (
-    <div>
-      <h1>Cart Page</h1>
-      <p>This is the cart page.</p>
-      <p>Here you can view and manage your shopping cart items.</p>
-    </div>
+    <RUContainer>
+      <div>
+        <Cart />
+      </div>
+    </RUContainer>
   );
 };
 export default CartPage;
