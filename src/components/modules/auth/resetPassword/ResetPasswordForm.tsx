@@ -57,13 +57,13 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
     }
   };
   return (
-    <div className="border-1 border-gray-300 bg-slate-50 rounded-xl flex-grow max-w-md w-full p-5">
+    <div className="border-1 border-gray-300 bg-slate-50 dark:bg-slate-800 rounded-xl flex-grow max-w-md w-full p-5">
       <div className="flex items-center justify-center">
         <Image src={Logo} alt="Adol Bodol Logo" width={130} height={10} />
       </div>
       <div className="mb-5">
-        <h1 className="text-2xl font-bold text-[#333]">Reset Password</h1>
-        <h4 className="text-[13px] font-md text-[#333]">
+        <h1 className="text-2xl font-bold ">Reset Password</h1>
+        <h4 className="text-[13px] font-md ">
           Please enter your new password below. Your password must be at least 6
           characters long and contain at least one uppercase letter, one number,
           and one special character.
@@ -76,16 +76,22 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
             name="newPassword"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Password</FormLabel>
+                <FormLabel>New Password</FormLabel>
                 <FormControl>
-                  <Input type="password" {...field} value={field.value || ""} />
+                  <Input
+                    type="password"
+                    {...field}
+                    value={field.value || ""}
+                    placeholder="Enter your new password"
+                    className="dark:bg-slate-700"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
 
-          <Button type="submit" className="mt-5 w-full">
+          <Button type="submit" className="mt-5 w-full dark:text-white">
             {isSubmitting ? "Resetting..." : "Reset Password"}
           </Button>
         </form>
