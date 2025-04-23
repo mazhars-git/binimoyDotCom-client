@@ -4,10 +4,8 @@ import Link from "next/link";
 const Footer = () => {
   const navLinks = [
     { href: "/", label: "Home" },
-    { href: "/shop", label: "Shop" },
-    { href: "/products", label: "App Products" },
+    { href: "/products", label: "Products" },
     { href: "/about", label: "About Us" },
-    { href: "/testimonial", label: "Testimonial" },
     { href: "/blogs", label: "Blogs" },
     { href: "/contact", label: "Contact Us" },
   ];
@@ -18,7 +16,7 @@ const Footer = () => {
     { href: "#", icon: X },
   ];
   return (
-    <footer className="py-6 bg-sky-400 dark:bg-gray-800 text-gray-500 dark:text-gray-50">
+    <footer className="py-6 border-t text-gray-500 dark:text-gray-50 mt-10">
       <div className="container px-6 mx-auto space-y-6 divide-y divide-gray-400 dark:divide-gray-600 md:space-y-6 divide-opacity-50">
         <div className="flex flex-col items-center justify-between space-y-6 md:flex-row md:space-y-0 py-6">
           <div className="">
