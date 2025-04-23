@@ -52,6 +52,9 @@ export default function Navbar() {
             Blog
           </Link>
           <Link href="/contact" className="hover:underline">
+            About us
+          </Link>
+          <Link href="/contact" className="hover:underline">
             Contact us
           </Link>
         </nav>
