@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { IProduct } from "@/types";
-import { Trash } from "lucide-react";
+import { Minus, Plus, Trash } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 
@@ -37,9 +37,14 @@ export default function CartProductCard({ product }: { product: IProduct }) {
             {product.price}
           </h2>
           <div className="flex items-center gap-8">
-            <p className="text-gray-500 font-semibold">
-              Quantity: {product.quantity}
-            </p>
+            <p className="text-gray-500 font-semibold">Quantity:</p>
+            <Button variant="outline" className="size-8 rounded-sm">
+              <Minus />
+            </Button>
+            <p className="font-semibold text-xl p-2">1</p>
+            <Button variant="outline" className="size-8 rounded-sm">
+              <Plus />
+            </Button>
 
             <Button variant="outline" className="size-8 rounded-sm">
               <Trash className="text-red-500/50" />
