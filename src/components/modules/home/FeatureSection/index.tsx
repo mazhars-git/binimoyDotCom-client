@@ -10,9 +10,9 @@ const FeatureSection = () => {
         </h1>
 
         <div className="mt-2">
-          <span className="inline-block w-40 h-1 bg-blue-600 rounded-full"></span>
-          <span className="inline-block w-3 h-1 ml-1 bg-blue-600 rounded-full"></span>
-          <span className="inline-block w-1 h-1 ml-1 bg-blue-600 rounded-full"></span>
+          <span className="inline-block w-40 h-1 bg-orange-500 rounded-full"></span>
+          <span className="inline-block w-3 h-1 ml-1 bg-orange-500 rounded-full"></span>
+          <span className="inline-block w-1 h-1 ml-1 bg-orange-500 rounded-full"></span>
         </div>
 
         <div className="mt-8 xl:mt-12 lg:flex lg:items-center">
@@ -56,7 +56,7 @@ const FeatureSection = () => {
               },
             ].map((feature, idx) => (
               <div className="space-y-3" key={idx}>
-                <span className="inline-block p-3 text-blue-600 bg-blue-100 rounded-xl dark:text-white dark:bg-blue-600 text-2xl">
+                <span className="inline-block p-3 text-blue-600 bg-blue-100 rounded-xl dark:text-white dark:bg-sky-500 text-2xl">
                   {feature.icon}
                 </span>
                 <h1 className="text-xl font-semibold text-gray-700 capitalize dark:text-white">

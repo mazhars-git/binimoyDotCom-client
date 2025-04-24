@@ -25,9 +25,7 @@ const Footer = () => {
               href="#"
               className="flex justify-center space-x-3 md:justify-start"
             >
-              <span className="self-center text-2xl font-semibold">
-                AdolBodol
-              </span>
+              <span className="self-center text-2xl font-bold">AdolBodol</span>
             </a>
           </div>
           <div className="">

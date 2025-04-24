@@ -42,19 +42,19 @@ export default function Navbar() {
         </Link>
 
         <nav className="hidden md:flex gap-6 text-sm font-medium">
-          <Link href="/" className="hover:underline">
+          <Link href="/" className="hover:text-orange-500">
             Home
           </Link>
-          <Link href="/products" className="hover:underline">
+          <Link href="/products" className="hover:text-orange-500">
             Products
           </Link>
-          <Link href="/blog" className="hover:underline">
+          <Link href="/blog" className="hover:text-orange-500">
             Blog
           </Link>
-          <Link href="/about" className="hover:underline">
+          <Link href="/about" className="hover:text-orange-500">
             About us
           </Link>
-          <Link href="/contact" className="hover:underline">
+          <Link href="/contact" className="hover:text-orange-500">
             Contact us
           </Link>
         </nav>
@@ -64,12 +64,12 @@ export default function Navbar() {
             <>
               <div className="flex gap-4">
                 <Link href="/wishlist">
-                  <span className="cursor-pointer">
+                  <span className="cursor-pointer hover:text-orange-500">
                     <Heart />
                   </span>
                 </Link>
                 <Link href="/cart">
-                  <span className="cursor-pointer">
+                  <span className="cursor-pointer hover:text-orange-500">
                     <ShoppingBag />
                   </span>
                 </Link>
@@ -88,7 +88,7 @@ export default function Navbar() {
                   <p className="pl-2 text-sm font-semibold">
                     {userDetail?.name}
                   </p>
-                  <DropdownMenuSeparator />
+                  <DropdownMenuSeparator className="mt-3" />
                   <Link
                     href={`${
                       user?.role === "admin"
@@ -96,18 +96,22 @@ export default function Navbar() {
                         : "/dashboard/profile"
                     }`}
                   >
-                    <DropdownMenuItem>Profile</DropdownMenuItem>
+                    <DropdownMenuItem className="hover:text-orange-400">
+                      Profile
+                    </DropdownMenuItem>
                   </Link>
                   <Link
                     href={`${
                       user?.role === "admin" ? "/dashboard/admin" : "/dashboard"
                     }`}
                   >
-                    <DropdownMenuItem>Dashboard</DropdownMenuItem>
+                    <DropdownMenuItem className="hover:text-orange-400">
+                      Dashboard
+                    </DropdownMenuItem>
                   </Link>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
-                    className="bg-red-100 dark:text-black cursor-pointer dark:hover:text-white"
+                    className="bg-red-400 dark:text-black cursor-pointer dark:hover:text-white"
                     onClick={handleLogOut}
                   >
                     <LogOut />

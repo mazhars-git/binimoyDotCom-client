@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import Image from "next/image";
 import React from "react";
 
@@ -7,7 +7,9 @@ const Contact = () => {
     <section className="">
       <div className="container px-6 py-12 mx-auto">
         <div className="text-center">
-          <p className="text-3xl font-bold text-blue-600 mb-4">Contact us</p>
+          <p className="text-2xl font-bold text-orange-500 mb-4 uppercase">
+            Contact Us
+          </p>
           <h1 className="mt-2 text-2xl font-semibold text-gray-800 md:text-3xl dark:text-white">
             We’d love to hear from you
           </h1>
@@ -27,7 +29,7 @@ const Contact = () => {
         <div className="grid grid-cols-1 gap-12 mt-10 lg:grid-cols-3 sm:grid-cols-2">
           {/* Sales Contact */}
           <div className="p-6 rounded-lg bg-blue-50 dark:bg-gray-800 shadow">
-            <span className="inline-block p-3 text-blue-600 rounded-lg bg-blue-100 dark:bg-gray-700">
+            <span className="inline-block p-3 text-blue-600 dark:text-white rounded-lg bg-blue-200 dark:bg-orange-500">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -56,7 +58,7 @@ const Contact = () => {
 
           {/* Visit */}
           <div className="p-6 rounded-lg bg-blue-50 dark:bg-gray-800 shadow">
-            <span className="inline-block p-3 text-blue-600 rounded-lg bg-blue-100 dark:bg-gray-700">
+            <span className="inline-block p-3 text-blue-600 dark:text-white rounded-lg bg-blue-200 dark:bg-orange-500">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -90,7 +92,7 @@ const Contact = () => {
 
           {/* Call */}
           <div className="p-6 rounded-lg bg-blue-50 dark:bg-gray-800 shadow">
-            <span className="inline-block p-3 text-blue-600 rounded-lg bg-blue-100 dark:bg-gray-700">
+            <span className="inline-block p-3 text-blue-600 dark:text-white rounded-lg bg-blue-200 dark:bg-orange-500">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
