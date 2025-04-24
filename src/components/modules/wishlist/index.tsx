@@ -11,66 +11,37 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { HeartOff } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { TProduct } from "@/types";
+import { IWishlist } from "@/types/wishlist";
+import { deleteSingleWishlist } from "@/services/wishlist";
+import { toast } from "sonner";
 
-
-type ProductType = {
-  _id: string;
-  title: string;
-  description: string;
-  category: string;
-  price: number;
-  condition: string;
-  images?: string[];
+type ManageWishlistProps = {
+  products: IWishlist[];
 };
 
 const ManageWishlist: React.FC<ManageWishlistProps> = ({ products }) => {
-  return (
-    <div className="grid gap-4 p-4 max-w-4xl mx-auto">
-      {products.map((product: TProduct) => (
-        <Card
-          key={product._id}
-          className="rounded-lg shadow-lg bg-white p-6 flex flex-col md:flex-row items-center justify-between w-full gap-4 transition-all hover:shadow-xl"
-        >
-          <div className="flex flex-col md:flex-row items-center justify-between w-full gap-4">
-            {/* Image section */}
-            <div className="flex-shrink-0">
-              <Image
-                // src={product?.images[0] || ""}
-                src={product.images[0] || ""}
-                alt={product.title}
-                width={120}
-                height={120}
-                className="rounded-lg object-cover shadow-md"
-              />
-            </div>
-
-type WishlistItemType = {
-  _id: string;
-  productId: ProductType;
-};
-
-type Props = {
-  products: WishlistItemType[];
-};
-
-const ManageWishlist = ({ products }: Props) => {
   const router = useRouter();
 
-  const handleAddToCart = (product: ProductType) => {
-    // API call
-    console.log("Added to cart:", product);
-    alert(`${product.title} added to cart`);
+  const handleAddToCart = (product: TProduct) => {
+    console.log("Viewing:", product);
   };
 
   const handleViewDetails = (productId: string) => {
-    // p.page
-    router.push(`/product/${productId}`);
+    router.push(`/products/${productId}`);
   };
 
-  const handleRemoveFromWishlist = (wishlistId: string) => {
-    // wrapi
-    console.log("Removed from wishlist:", wishlistId);
-    alert("Item removed from wishlist");
+  const handleRemoveFromWishlist = async (productId: string) => {
+    try {
+      const result = await deleteSingleWishlist(productId);
+      if (result?.success) {
+        toast.success(result?.message);
+      } else {
+        toast.error(result?.message);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   if (!products || products.length === 0) {
@@ -90,41 +61,41 @@ const ManageWishlist = ({ products }: Props) => {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
-      {products.map((item) => {
-        const product = item.productId;
-
-
-        return (
+    <div>
+      <div>
+        <h2 className="text-2xl text-center mt-5 font-bold mb-4">
+          Your Wishlist
+        </h2>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
+        {products.map((item: IWishlist) => (
           <Card
             key={item._id}
-            className="rounded-2xl shadow-md transition hover:shadow-lg"
-          >
+            className="rounded-2xl shadow-md transition hover:shadow-lg">
             <CardHeader>
-              <CardTitle>{product.title}</CardTitle>
+              <CardTitle>{item?.productId?.title}</CardTitle>
               <CardDescription className="line-clamp-2">
-                {product.description}
+                {item?.productId?.description}
               </CardDescription>
             </CardHeader>
             <CardContent>
-              {product.images?.[0] && (
-                <Image
-                  src={product.images[0]}
-                  alt={product.title}
-                  width={300}
-                  height={200}
-                  className="w-full h-48 object-cover rounded-lg mb-4"
-                />
-              )}
+              <Image
+                src={item?.productId.images[0] || ""}
+                alt={item?.productId.title}
+                width={300}
+                height={200}
+                className="w-full h-48 object-cover rounded-lg mb-4"
+              />
+
               <div className="flex justify-between items-center mb-4">
                 <p className="font-semibold text-lg text-foreground">
-                  {product.category}
+                  {item?.productId?.category}
                 </p>
                 <p className="font-semibold text-lg text-foreground">
-                  ৳{product.price}
+                  ৳{item?.productId?.price}
                 </p>
                 <p className="text-sm text-muted-foreground capitalize">
-                  {product.condition}
+                  {item?.productId?.condition}
                 </p>
               </div>
 
@@ -133,42 +104,27 @@ const ManageWishlist = ({ products }: Props) => {
                 <Button
                   variant="default"
                   size="sm"
-                  onClick={() => handleAddToCart(product)}
-                >
+                  onClick={() => handleAddToCart(item?.productId)}>
                   Add to Cart
                 </Button>
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => handleViewDetails(product._id)}
-                >
+                  disabled={item?.productId?.status !== "available"}
+                  onClick={() => handleViewDetails(item?.productId._id)}>
                   View Details
                 </Button>
                 <Button
                   variant="destructive"
                   size="sm"
-                  onClick={() => handleRemoveFromWishlist(item._id)}
-                >
+                  onClick={() => handleRemoveFromWishlist(item._id)}>
                   Remove
                 </Button>
               </div>
             </CardContent>
           </Card>
-        );
-      })}
-      
-              {/* Add to Cart button */}
-              <Button
-                className="mt-4 md:mt-0 py-2 px-4 text-white font-semibold rounded-lg bg-blue-600 hover:bg-blue-700 transition-all"
-                disabled={product.status !== "available"}
-              >
-                Add to Cart
-              </Button>
-            </div>
-          </div>
-        </Card>
-      ))}
-
+        ))}
+      </div>
     </div>
   );
 };
