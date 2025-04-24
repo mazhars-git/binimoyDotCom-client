@@ -10,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { HeartOff } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 type ProductType = {
   _id: string;
@@ -31,7 +32,25 @@ type Props = {
 };
 
 const ManageWishlist = ({ products }: Props) => {
-  console.log(products, "products getting");
+  const router = useRouter();
+
+  const handleAddToCart = (product: ProductType) => {
+    // API call
+    console.log("Added to cart:", product);
+    alert(`${product.title} added to cart`);
+  };
+
+  const handleViewDetails = (productId: string) => {
+    // p.page
+    router.push(`/product/${productId}`);
+  };
+
+  const handleRemoveFromWishlist = (wishlistId: string) => {
+    // wrapi
+    console.log("Removed from wishlist:", wishlistId);
+    alert("Item removed from wishlist");
+  };
+
   if (!products || products.length === 0) {
     return (
       <div className="flex justify-center items-center h-[70vh]">
@@ -74,9 +93,9 @@ const ManageWishlist = ({ products }: Props) => {
                   className="w-full h-48 object-cover rounded-lg mb-4"
                 />
               )}
-              <div className="flex justify-between items-center">
+              <div className="flex justify-between items-center mb-4">
                 <p className="font-semibold text-lg text-foreground">
-                  ৳{product?.category}
+                  {product.category}
                 </p>
                 <p className="font-semibold text-lg text-foreground">
                   ৳{product.price}
@@ -86,15 +105,27 @@ const ManageWishlist = ({ products }: Props) => {
                 </p>
               </div>
 
-              {/* Button section */}
-              <div className="flex flex-col gap-2 mt-4">
-                <Button variant="default" size="sm">
+              {/* Buttons */}
+              <div className="flex flex-col gap-2">
+                <Button
+                  variant="default"
+                  size="sm"
+                  onClick={() => handleAddToCart(product)}
+                >
                   Add to Cart
                 </Button>
-                <Button variant="outline" size="sm">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleViewDetails(product._id)}
+                >
                   View Details
                 </Button>
-                <Button variant="destructive" size="sm">
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  onClick={() => handleRemoveFromWishlist(item._id)}
+                >
                   Remove
                 </Button>
               </div>
