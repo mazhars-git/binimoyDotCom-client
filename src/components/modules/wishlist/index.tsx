@@ -1,13 +1,27 @@
+"use client";
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
-import { TProduct } from "@/types";
 import Image from "next/image";
-import React from "react";
-import { Eye } from "lucide-react";
-interface ManageWishlistProps {
-  products: TProduct[];
-}
+import { HeartOff } from "lucide-react";
+import { useRouter } from "next/navigation";
+
+
+type ProductType = {
+  _id: string;
+  title: string;
+  description: string;
+  category: string;
+  price: number;
+  condition: string;
+  images?: string[];
+};
 
 const ManageWishlist: React.FC<ManageWishlistProps> = ({ products }) => {
   return (
@@ -30,37 +44,119 @@ const ManageWishlist: React.FC<ManageWishlistProps> = ({ products }) => {
               />
             </div>
 
-            {/* Info section */}
-            <div className="flex flex-col md:flex-row items-center justify-start gap-4 w-full">
-              <h3 className="text-xl font-semibold text-gray-800">
-                {product.title}
-              </h3>
+type WishlistItemType = {
+  _id: string;
+  productId: ProductType;
+};
 
-              {/* Price */}
-              <p className="text-lg text-gray-700">{product.price}</p>
+type Props = {
+  products: WishlistItemType[];
+};
 
-              {/* Stock */}
-              <p
-                className={cn(
-                  "text-sm font-medium",
-                  product.status === "available"
-                    ? "text-green-600"
-                    : "text-red-500"
-                )}
-              >
-                {product.status}
-              </p>
+const ManageWishlist = ({ products }: Props) => {
+  const router = useRouter();
 
-              {/*  View Button with Eye Icon */}
+  const handleAddToCart = (product: ProductType) => {
+    // API call
+    console.log("Added to cart:", product);
+    alert(`${product.title} added to cart`);
+  };
 
-              <Button
-                variant="outline"
-                className="mt-4 md:mt-0 flex items-center gap-1 border-gray-300 text-gray-700 hover:text-blue-600 hover:border-gray-500 transition-colors"
-              >
-                <Eye className="w-4 h-4" />
-                View
-              </Button>
+  const handleViewDetails = (productId: string) => {
+    // p.page
+    router.push(`/product/${productId}`);
+  };
 
+  const handleRemoveFromWishlist = (wishlistId: string) => {
+    // wrapi
+    console.log("Removed from wishlist:", wishlistId);
+    alert("Item removed from wishlist");
+  };
+
+  if (!products || products.length === 0) {
+    return (
+      <div className="flex justify-center items-center h-[70vh]">
+        <div className="bg-muted rounded-xl p-8 shadow-lg text-center max-w-md">
+          <HeartOff className="mx-auto text-muted-foreground mb-4" size={48} />
+          <p className="text-2xl font-semibold text-muted-foreground mb-2">
+            Your wishlist is empty
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Start adding your favorite items now!
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
+      {products.map((item) => {
+        const product = item.productId;
+
+
+        return (
+          <Card
+            key={item._id}
+            className="rounded-2xl shadow-md transition hover:shadow-lg"
+          >
+            <CardHeader>
+              <CardTitle>{product.title}</CardTitle>
+              <CardDescription className="line-clamp-2">
+                {product.description}
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              {product.images?.[0] && (
+                <Image
+                  src={product.images[0]}
+                  alt={product.title}
+                  width={300}
+                  height={200}
+                  className="w-full h-48 object-cover rounded-lg mb-4"
+                />
+              )}
+              <div className="flex justify-between items-center mb-4">
+                <p className="font-semibold text-lg text-foreground">
+                  {product.category}
+                </p>
+                <p className="font-semibold text-lg text-foreground">
+                  ৳{product.price}
+                </p>
+                <p className="text-sm text-muted-foreground capitalize">
+                  {product.condition}
+                </p>
+              </div>
+
+              {/* Buttons */}
+              <div className="flex flex-col gap-2">
+                <Button
+                  variant="default"
+                  size="sm"
+                  onClick={() => handleAddToCart(product)}
+                >
+                  Add to Cart
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleViewDetails(product._id)}
+                >
+                  View Details
+                </Button>
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  onClick={() => handleRemoveFromWishlist(item._id)}
+                >
+                  Remove
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        );
+      })}
+      
               {/* Add to Cart button */}
               <Button
                 className="mt-4 md:mt-0 py-2 px-4 text-white font-semibold rounded-lg bg-blue-600 hover:bg-blue-700 transition-all"
@@ -72,6 +168,7 @@ const ManageWishlist: React.FC<ManageWishlistProps> = ({ products }) => {
           </div>
         </Card>
       ))}
+
     </div>
   );
 };

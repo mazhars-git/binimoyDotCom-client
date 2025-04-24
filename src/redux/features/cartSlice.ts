@@ -19,7 +19,7 @@ const initialState: InitialState = {
     category: "",
     images: [],
     location: "",
-    status: "",
+    status: "available",
   },
   address: "",
 };
@@ -49,7 +49,7 @@ const cartSlice = createSlice({
         category: "",
         images: [],
         location: "",
-        status: "",
+        status: "available",
       };
       state.address = "";
     },

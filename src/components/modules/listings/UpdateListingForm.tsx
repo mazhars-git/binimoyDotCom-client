@@ -41,7 +41,6 @@ const productSchema = z.object({
   location: z.string().min(1, "Location is required"),
 });
 
-// Type for the form data
 type ProductFormData = z.infer<typeof productSchema>;
 
 export const UpdateListingForm = () => {
