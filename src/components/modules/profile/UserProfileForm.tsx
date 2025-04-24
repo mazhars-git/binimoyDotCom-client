@@ -125,7 +125,8 @@ export const UserProfileForm: React.FC<UserProfileProps> = ({ user }) => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex w-full flex-col gap-5">
+          className="flex w-full flex-col gap-5"
+        >
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {/* Profile Photo */}
             <FormField
@@ -144,7 +145,8 @@ export const UserProfileForm: React.FC<UserProfileProps> = ({ user }) => {
                     />
                     <div
                       onClick={() => fileInputRef.current?.click()}
-                      className="cursor-pointer border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 flex flex-col items-center justify-center hover:border-gray-400 dark:hover:border-gray-500 transition-colors">
+                      className="cursor-pointer border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 flex flex-col items-center justify-center hover:border-gray-400 dark:hover:border-gray-500 transition-colors"
+                    >
                       {previewImage ? (
                         <div className="w-full">
                           <Image
@@ -223,7 +225,8 @@ export const UserProfileForm: React.FC<UserProfileProps> = ({ user }) => {
             <Button
               className="dark:text-slate-50"
               type="submit"
-              disabled={isSubmitting}>
+              disabled={isSubmitting}
+            >
               {isSubmitting ? "Updating..." : "Update Profile"}
             </Button>
           </div>

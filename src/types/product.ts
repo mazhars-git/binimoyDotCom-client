@@ -1,3 +1,4 @@
+
 export type Condition = "new" | "like new" | "used" | "for parts";
 // export type Category =
 //   | "Electronics"
@@ -91,6 +92,7 @@ export type TProduct = {
     role: "user" | "admin";
     isBlocked: boolean;
   };
+  sellerID?: string;
   location: string;
   images: string[];
   isActive?: boolean;
@@ -103,20 +105,16 @@ export interface IProduct {
   title: string;
   description: string;
   price: number;
-  // condition: string;
-  condition: Condition;
+  userID?:string;
+  condition: string;
   quantity: number;
-
-  // category: string;
-  category: Category;
-
   orderQuantity: number;
   category: string;
-
   images: string[];
   location: string;
-  // status: string;
   status: Status;
   createdAt?: string;
   updatedAt?: string;
 }
+
+

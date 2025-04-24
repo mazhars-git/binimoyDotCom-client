@@ -1,6 +1,3 @@
-
-
-
 "use client";
 import { RUTable } from "@/components/ui/core/RUTable";
 import { TTransaction } from "@/types/purchaseHistory";
@@ -18,15 +15,15 @@ const PurchaseHistory = ({ transactions }: { transactions: TTransaction[] }) => 
         <div className="flex items-center gap-3">
           <div className="relative h-10 w-10 min-w-[40px] overflow-hidden rounded-md border">
             <Image
-              src={row.original.product?.images?.[0] || "/placeholder-item.jpg"}
-              alt={row.original.product.title}
+              src={row?.original?.product?.images?.[0] || "/placeholder-item.jpg"}
+              alt={row?.original?.product?.title}
               fill
               className="object-cover"
               sizes="40px"
             />
           </div>
           <div>
-            <p className="font-medium line-clamp-1">{row.original.product.title}</p>
+            <p className="font-medium line-clamp-1">{row?.original?.product?.title}</p>
             <p className="text-xs text-muted-foreground">
               ID: {row.original.transaction.id.slice(0, 8)}
             </p>
@@ -37,13 +34,13 @@ const PurchaseHistory = ({ transactions }: { transactions: TTransaction[] }) => 
     {
       accessorKey: "buyerId.name",
       header: "Purchased By",
-      cell: ({ row }) => <span className="font-medium">{row.original.buyerId.name}</span>,
+      cell: ({ row }) => <span className="font-medium">{row?.original?.buyerId?.name}</span>,
     },
     {
       accessorKey: "price",
       header: "Price",
       cell: ({ row }) => (
-        <span className="font-semibold">${row.original.product.price.toFixed(2)}</span>
+        <span className="font-semibold">${row?.original?.product?.price?.toFixed(2)}</span>
       ),
     },
     {
@@ -51,15 +48,15 @@ const PurchaseHistory = ({ transactions }: { transactions: TTransaction[] }) => 
       header: "Date",
       cell: ({ row }) => (
         <span className="text-sm text-muted-foreground">
-          {new Date(row.original.createdAt).toLocaleDateString()}
+          {new Date(row.original?.transaction?.date_time).toLocaleDateString()}
         </span>
-      ),
+      ), 
     },
     {
       accessorKey: "status",
       header: "Status",
       cell: ({ row }) => {
-        const status = row.original.status;
+        const status = row?.original?.status;
         return (
           <Badge 
             variant={status === 'completed' ? 'default' : 'outline'}

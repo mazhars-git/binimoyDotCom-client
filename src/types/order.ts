@@ -1,5 +1,8 @@
 export interface IOrder {
-  price: number;
-  quantity: number;
-  location: string;
+  product: string;
+  address: string;
+}
+
+export interface IVerifiyedOrder {
+  order_id: string;
 }
