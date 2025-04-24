@@ -1,89 +1,3 @@
-// "use client";
-// import { Button } from "@/components/ui/button";
-// import { Card } from "@/components/ui/card";
-// import { cn } from "@/lib/utils";
-// import { TProduct } from "@/types";
-// import Image from "next/image";
-// import React from "react";
-// import { Eye } from "lucide-react";
-
-// interface ManageWishlistProps {
-//   products: TProduct[];
-// }
-
-// const ManageWishlist: React.FC<ManageWishlistProps> = ({ products }) => {
-//   console.log(products);
-//   return (
-//     <div className="grid gap-4 p-4 max-w-4xl mx-auto">
-//       {products.map((product: TProduct) => (
-//         <Card
-//           key={product._id}
-//           className="rounded-lg shadow-lg bg-white p-6 flex flex-col md:flex-row items-center justify-between w-full gap-4 transition-all hover:shadow-xl"
-//         >
-//           <div className="flex flex-col md:flex-row items-center justify-between w-full gap-4">
-//             {/* Image section */}
-//             <div className="flex-shrink-0">
-//               <Image
-//                 src={
-//                   product.images && product.images.length > 0
-//                     ? product.images[0]
-//                     : "/default-image.jpg"
-//                 } // Default image if no product image
-//                 alt={product.title}
-//                 width={120}
-//                 height={120}
-//                 className="rounded-lg object-cover shadow-md"
-//               />
-//             </div>
-
-//             {/* Info section */}
-//             <div className="flex flex-col md:flex-row items-center justify-start gap-4 w-full">
-//               <h3 className="text-xl font-semibold text-gray-800">
-//                 {product.title}
-//               </h3>
-
-//               {/* Price */}
-//               <p className="text-lg text-gray-700">{product.price}</p>
-
-//               {/* Stock */}
-//               <p
-//                 className={cn(
-//                   "text-sm font-medium",
-//                   product.status === "available"
-//                     ? "text-green-600"
-//                     : "text-red-500"
-//                 )}
-//               >
-//                 {product.status}
-//               </p>
-
-//               {/* View Button with Eye Icon */}
-//               <Button
-//                 variant="outline"
-//                 className="mt-4 md:mt-0 flex items-center gap-1 border-gray-300 text-gray-700 hover:text-blue-600 hover:border-gray-500 transition-colors"
-//               >
-//                 <Eye className="w-4 h-4" />
-//                 View
-//               </Button>
-
-//               {/* Add to Cart button */}
-//               <Button
-//                 className="mt-4 md:mt-0 py-2 px-4 text-white font-semibold rounded-lg bg-blue-600 hover:bg-blue-700 transition-all"
-//                 disabled={product.status !== "available"}
-//               >
-//                 Add to Cart
-//               </Button>
-//             </div>
-//           </div>
-//         </Card>
-//       ))}
-//     </div>
-//   );
-// };
-
-// export default ManageWishlist;
-////////////////////////////////////////////////
-
 "use client";
 
 import {
@@ -95,6 +9,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { HeartOff } from "lucide-react";
 
 type ProductType = {
   _id: string;
@@ -114,14 +29,21 @@ type WishlistItemType = {
 type Props = {
   products: WishlistItemType[];
 };
+
 const ManageWishlist = ({ products }: Props) => {
   console.log(products, "products getting");
   if (!products || products.length === 0) {
     return (
       <div className="flex justify-center items-center h-[70vh]">
-        <p className="text-xl text-muted-foreground">
-          Your wishlist is empty 💤
-        </p>
+        <div className="bg-muted rounded-xl p-8 shadow-lg text-center max-w-md">
+          <HeartOff className="mx-auto text-muted-foreground mb-4" size={48} />
+          <p className="text-2xl font-semibold text-muted-foreground mb-2">
+            Your wishlist is empty
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Start adding your favorite items now!
+          </p>
+        </div>
       </div>
     );
   }
@@ -163,9 +85,19 @@ const ManageWishlist = ({ products }: Props) => {
                   {product.condition}
                 </p>
               </div>
-              <Button variant="destructive" size="sm" className="mt-4 w-full">
-                Remove
-              </Button>
+
+              {/* Button section */}
+              <div className="flex flex-col gap-2 mt-4">
+                <Button variant="default" size="sm">
+                  Add to Cart
+                </Button>
+                <Button variant="outline" size="sm">
+                  View Details
+                </Button>
+                <Button variant="destructive" size="sm">
+                  Remove
+                </Button>
+              </div>
             </CardContent>
           </Card>
         );

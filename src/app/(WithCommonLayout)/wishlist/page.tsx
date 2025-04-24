@@ -1,26 +1,3 @@
-// import ManageWishlist from "@/components/modules/wishlist";
-// import { getCurrentUserDetails } from "@/services/AuthService";
-// import { getAllWishlist } from "@/services/wishlist";
-
-// const WishlistPage = async () => {
-//   const UserData = await getCurrentUserDetails();
-
-//   const res = await getAllWishlist(UserData?.data?._id);
-//   console.log(UserData?.data);
-
-//   if (res && res.data) {
-//     return (
-//       <div className="mx-5">
-//         <ManageWishlist products={res.data.items || []} />
-//       </div>
-//     );
-//   } else {
-//     return <div>Failed to load wishlist items.</div>;
-//   }
-// };
-
-// export default WishlistPage;
-
 import ManageWishlist from "@/components/modules/wishlist";
 import { getCurrentUserDetails } from "@/services/AuthService";
 import { getAllWishlist } from "@/services/wishlist";
