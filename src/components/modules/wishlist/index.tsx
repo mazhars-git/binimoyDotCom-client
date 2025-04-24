@@ -11,10 +11,12 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { HeartOff } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { TProduct } from "@/types";
+import { IProduct } from "@/types";
 import { IWishlist } from "@/types/wishlist";
 import { deleteSingleWishlist } from "@/services/wishlist";
 import { toast } from "sonner";
+import { useAppDispatch } from "@/redux/hook";
+import { addToCart } from "@/redux/features/cartSlice";
 
 type ManageWishlistProps = {
   products: IWishlist[];
@@ -22,9 +24,17 @@ type ManageWishlistProps = {
 
 const ManageWishlist: React.FC<ManageWishlistProps> = ({ products }) => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
 
-  const handleAddToCart = (product: TProduct) => {
-    console.log("Viewing:", product);
+  const handleAddToCart = async (product: IProduct, id: string) => {
+    dispatch(addToCart(product));
+    if (product._id) {
+      await deleteSingleWishlist(id);
+      toast.success("Product added to cart");
+      router.push("/cart");
+    } else {
+      toast.error("Product ID is missing");
+    }
   };
 
   const handleViewDetails = (productId: string) => {
@@ -92,7 +102,9 @@ const ManageWishlist: React.FC<ManageWishlistProps> = ({ products }) => {
                   {item?.productId?.category}
                 </p>
                 <p className="font-semibold text-lg text-foreground">
-                  ৳{item?.productId?.price}
+
+                  $ {item?.productId?.price}
+
                 </p>
                 <p className="text-sm text-muted-foreground capitalize">
                   {item?.productId?.condition}
@@ -104,14 +116,20 @@ const ManageWishlist: React.FC<ManageWishlistProps> = ({ products }) => {
                 <Button
                   variant="default"
                   size="sm"
-                  onClick={() => handleAddToCart(item?.productId)}>
+
+                  onClick={() => handleAddToCart(item?.productId, item?._id)}
+                >
+
                   Add to Cart
                 </Button>
                 <Button
                   variant="outline"
                   size="sm"
                   disabled={item?.productId?.status !== "available"}
-                  onClick={() => handleViewDetails(item?.productId._id)}>
+
+                  onClick={() => handleViewDetails(item?.productId._id)}
+                >
+
                   View Details
                 </Button>
                 <Button
