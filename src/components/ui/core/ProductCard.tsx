@@ -75,11 +75,11 @@ const ProductCard = ({ product }: { product: TProduct }) => {
           className="rounded-sm h-48 object-cover"
         />
         {product?.status === "sold" ? (
-          <div className="absolute left-2 top-2 bg-red-500 text-white px-2 rounded-full">
+          <div className="absolute left-2 top-2 bg-red-500 text-white px-2 rounded-md">
             {product.status}
           </div>
         ) : (
-          <div className="absolute left-2 top-2 bg-green-600 text-white px-2 rounded-full">
+          <div className="absolute left-2 top-2 bg-green-600 text-white px-2 rounded-md">
             {product.status}
           </div>
         )}
@@ -95,7 +95,7 @@ const ProductCard = ({ product }: { product: TProduct }) => {
         </Link>
 
         <div className="flex items-center justify-between my-2">
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-gray-600 dark:text-white">
             <span className="font-semibold">$ {product?.price}</span>
           </p>
 
@@ -123,7 +123,7 @@ const ProductCard = ({ product }: { product: TProduct }) => {
                     variant="outline"
                     size="sm"
                     disabled={product?.status === "sold" ? true : false}
-                    className="w-8 h-8 p-0 flex items-center justify-center rounded-full cursor-pointer text-muted-foreground border-muted-foreground hover:text-secondary hover:bg-gray-400"
+                    className="w-8 h-8 p-0 flex items-center justify-center rounded-full cursor-pointer text-muted-foreground border-muted-foreground dark:text-white dark:border-slate-100 dark:hover:bg-orange-400"
                     onClick={() =>
                       handleAddToWishList(
                         product?._id,
@@ -144,7 +144,7 @@ const ProductCard = ({ product }: { product: TProduct }) => {
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button
-                    className="w-8 h-8 p-0 flex items-center justify-center rounded-full cursor-pointer text-muted-foreground border-muted-foreground hover:text-secondary hover:bg-gray-400"
+                    className="w-8 h-8 p-0 flex items-center justify-center rounded-full cursor-pointer text-muted-foreground border-muted-foreground dark:text-white dark:border-slate-100 dark:hover:bg-orange-400"
                     variant="outline"
                     size="sm"
                     disabled={product?.status === "sold" ? true : false}
