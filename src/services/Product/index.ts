@@ -61,10 +61,34 @@ export const getAllListings = async () => {
       }
     );
     return await res.json();
+
+
   } catch (error: any) {
     return Error(error.message);
   }
 };
+
+
+export const getSingleListing = async (productId: string) => {
+
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_BASE_API}/listings/${productId}`,
+      {
+
+        next: {
+          tags: ["PRODUCT"],
+        },
+      }
+    );
+    const data = await res.json();
+    return data;
+
+  } catch (error: any) {
+    return Error(error.message);
+  }
+};
+
 
 // Delete product ss
 export const deleteProductListing = async (productId: string): Promise<any> => {
@@ -156,3 +180,5 @@ export const deleteProductListing = async (productId: string): Promise<any> => {
 //     return Error(error.message);
 //   }
 // };
+
+

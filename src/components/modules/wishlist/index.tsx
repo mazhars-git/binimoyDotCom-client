@@ -12,6 +12,7 @@ import Image from "next/image";
 import { HeartOff } from "lucide-react";
 import { useRouter } from "next/navigation";
 
+
 type ProductType = {
   _id: string;
   title: string;
@@ -21,6 +22,27 @@ type ProductType = {
   condition: string;
   images?: string[];
 };
+
+const ManageWishlist: React.FC<ManageWishlistProps> = ({ products }) => {
+  return (
+    <div className="grid gap-4 p-4 max-w-4xl mx-auto">
+      {products.map((product: TProduct) => (
+        <Card
+          key={product._id}
+          className="rounded-lg shadow-lg bg-white p-6 flex flex-col md:flex-row items-center justify-between w-full gap-4 transition-all hover:shadow-xl"
+        >
+          <div className="flex flex-col md:flex-row items-center justify-between w-full gap-4">
+            {/* Image section */}
+            <div className="flex-shrink-0">
+              <Image
+                // src={product?.images[0] || ""}
+                src={product.images[0] || ""}
+                alt={product.title}
+                width={120}
+                height={120}
+                className="rounded-lg object-cover shadow-md"
+              />
+            </div>
 
 type WishlistItemType = {
   _id: string;
@@ -71,6 +93,7 @@ const ManageWishlist = ({ products }: Props) => {
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
       {products.map((item) => {
         const product = item.productId;
+
 
         return (
           <Card
@@ -133,6 +156,19 @@ const ManageWishlist = ({ products }: Props) => {
           </Card>
         );
       })}
+      
+              {/* Add to Cart button */}
+              <Button
+                className="mt-4 md:mt-0 py-2 px-4 text-white font-semibold rounded-lg bg-blue-600 hover:bg-blue-700 transition-all"
+                disabled={product.status !== "available"}
+              >
+                Add to Cart
+              </Button>
+            </div>
+          </div>
+        </Card>
+      ))}
+
     </div>
   );
 };

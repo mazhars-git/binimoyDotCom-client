@@ -3,7 +3,7 @@ import React from "react";
 
 const FeatureSection = () => {
   return (
-    <section className="bg-white dark:bg-gray-900">
+    <section className="">
       <div className="container px-6 py-10 mx-auto">
         <h1 className="text-2xl font-semibold text-gray-800 capitalize lg:text-3xl dark:text-white">
           Explore our <br /> awesome features

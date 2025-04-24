@@ -1,5 +1,4 @@
 "use client";
-
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -16,6 +15,8 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useUser } from "@/context/UserContext";
+import { addProduct } from "@/redux/features/cartSlice";
+import { useAppDispatch } from "@/redux/hook";
 import { createWishlist } from "@/services/wishlist";
 
 import { TProduct } from "@/types";
@@ -26,6 +27,11 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 const ProductCard = ({ product }: { product: TProduct }) => {
+  const dispatch = useAppDispatch();
+
+  const handleAddProduct = (product: TProduct) => {
+    dispatch(addProduct(product));
+  };
   const { user, userDetail, setIsLoading } = useUser();
 
   const router = useRouter();
@@ -80,7 +86,7 @@ const ProductCard = ({ product }: { product: TProduct }) => {
       </CardHeader>
 
       <CardContent className=" p-0 mt-2">
-        <Link href={`/products/${product?._id}`} passHref>
+        <Link href={`/product/${product?._id}`} passHref>
           <CardTitle className="font-bold cursor-pointer text-lg">
             {product?.title.length > 30
               ? product?.title?.slice(0, 30) + "..."
@@ -103,7 +109,7 @@ const ProductCard = ({ product }: { product: TProduct }) => {
 
       <CardFooter className="block p-0">
         <div className="flex gap-2 items-center justify-between">
-          <Link href={`/product/${product._id}`}>
+          <Link href={`/products/${product._id}`}>
             <Button size="sm" className="rounded-full cursor-pointer">
               View Details
             </Button>
@@ -138,16 +144,11 @@ const ProductCard = ({ product }: { product: TProduct }) => {
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button
+                    className="w-8 h-8 p-0 flex items-center justify-center rounded-full cursor-pointer text-muted-foreground border-muted-foreground hover:text-secondary hover:bg-gray-400"
                     variant="outline"
                     size="sm"
                     disabled={product?.status === "sold" ? true : false}
-                    className="w-8 h-8 p-0 flex items-center justify-center rounded-full cursor-pointer text-muted-foreground border-muted-foreground hover:text-secondary hover:bg-gray-400"
-                    onClick={() =>
-                      handleAddToWishList(
-                        product?._id,
-                        userDetail?._id as string
-                      )
-                    }
+                    onClick={() => handleAddProduct(product)}
                   >
                     <ShoppingBag />
                   </Button>

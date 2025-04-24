@@ -99,15 +99,20 @@ export type TProduct = {
   updatedAt?: Date;
 };
 export interface IProduct {
-  _id?: string;
+  _id: string;
   title: string;
   description: string;
   price: number;
   // condition: string;
   condition: Condition;
   quantity: number;
+
   // category: string;
   category: Category;
+
+  orderQuantity: number;
+  category: string;
+
   images: string[];
   location: string;
   // status: string;
