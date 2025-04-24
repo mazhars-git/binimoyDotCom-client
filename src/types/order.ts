@@ -1,13 +1,8 @@
 export interface IOrder {
-  buyerID: string;
-  products: {
-    product: string;
-    sellerID: string;
-    quantity: number;
-  }[];
+  product: string;
   address: string;
 }
 
-export interface IVerifiyedOrder{
-  order_id:string
+export interface IVerifiyedOrder {
+  order_id: string;
 }

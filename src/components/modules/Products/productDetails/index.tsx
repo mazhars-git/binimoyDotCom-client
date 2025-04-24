@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { addProduct } from "@/redux/features/cartSlice";
+import { addToCart } from "@/redux/features/cartSlice";
 import { useAppDispatch } from "@/redux/hook";
 import { IProduct } from "@/types";
 import Image from "next/image";
@@ -9,7 +9,7 @@ const ProductDetails = ({ product }: { product: IProduct }) => {
   const dispatch = useAppDispatch();
 
   const handleAddProduct = (product: IProduct) => {
-    dispatch(addProduct(product));
+    dispatch(addToCart(product));
   };
   return (
     <div className="border-2 grid grid-cols-2 border-sky-300 rounded-2xl items-center my-10 gap-8 w-2xl mx-auto">

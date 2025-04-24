@@ -2,16 +2,15 @@
 import Image from "next/image";
 import emptyCart from "@/assets/empty-cart.jpg";
 import CartProductCard from "./CartProductCard";
-import { IProduct } from "@/types";
 import { useAppSelector } from "@/redux/hook";
-import { orderedProductsSelector } from "@/redux/features/cartSlice";
+import { orderedProductSelector } from "@/redux/features/cartSlice";
 
 export default function Cart() {
-  const products = useAppSelector(orderedProductsSelector);
+  const product = useAppSelector(orderedProductSelector);
 
   return (
     <div className="col-span-8 row-span-3 h-full space-y-5">
-      {products.length === 0 && (
+      {product.title === "" ? (
         <div className="text-center pt-5">
           <p className="text-2xl font-bold text-orange-500">Cart is empty!!</p>
 
@@ -19,10 +18,9 @@ export default function Cart() {
             <Image src={emptyCart} alt="empty cart" width={400} height={400} />
           </div>
         </div>
+      ) : (
+        <CartProductCard product={product} />
       )}
-      {products?.map((product: IProduct) => (
-        <CartProductCard key={product._id} product={product} />
-      ))}
     </div>
   );
 }

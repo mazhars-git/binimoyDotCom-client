@@ -1,142 +1,82 @@
 import { IProduct } from "@/types";
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 
-export interface CartProduct extends IProduct {
-  orderQuantity: number;
-  sellerID: string;
-}
-
 interface InitialState {
-  products: CartProduct[];
-  subTotal: number;
-  city: string;
-  shippingAddress: string;
+  product: IProduct;
+  address: string;
 }
 
 const initialState: InitialState = {
-  products: [],
-  subTotal: 0,
-  city: "",
-  shippingAddress: "",
+  product: {
+    _id: "",
+    title: "",
+    description: "",
+    price: 0,
+    condition: "",
+    quantity: 0,
+    orderQuantity: 0,
+    category: "",
+    images: [],
+    location: "",
+    status: "available",
+  },
+  address: "",
 };
 
 const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    addProduct: (state, action) => {
-      const productToAdd = state.products.find(
-        (product) => product._id === action.payload._id
-      );
+    addToCart: (state, action: PayloadAction<IProduct>) => {
+      const newProduct = action.payload;
 
-      if (productToAdd) {
-        productToAdd.orderQuantity += 1;
-        return;
-      }
-
-      state.products.push({ ...action.payload, orderQuantity: 1 });
-    },
-    incrementOrderQuantity: (state, action) => {
-      const productToIncrement = state.products.find(
-        (product) => product._id === action.payload
-      );
-
-      if (productToIncrement) {
-        productToIncrement.orderQuantity += 1;
-        return;
+      // Only update if it's a different product
+      if (state.product._id !== newProduct._id) {
+        state.product = newProduct;
       }
     },
-    decrementOrderQuantity: (state, action) => {
-      const productToDecrement = state.products.find(
-        (product) => product._id === action.payload
-      );
 
-      if (productToDecrement && productToDecrement.orderQuantity > 1) {
-        productToDecrement.orderQuantity -= 1;
-        return;
-      }
+    removeFromCart: (state) => {
+      state.product = {
+        _id: "",
+        title: "",
+        description: "",
+        price: 0,
+        condition: "",
+        quantity: 0,
+        orderQuantity: 0,
+        category: "",
+        images: [],
+        location: "",
+        status: "available",
+      };
+      state.address = "";
     },
-    removeProduct: (state, action) => {
-      state.products = state.products.filter(
-        (product) => product._id !== action.payload
-      );
-    },
-    updateCity: (state, action) => {
-      state.city = action.payload;
-    },
-    updateShippingAddress: (state, action) => {
-      state.shippingAddress = action.payload;
+
+    addAddress: (state, action) => {
+      state.address = action.payload;
     },
   },
 });
 
 // order
 
-export const orderedProductsSelector = (state: RootState) => {
-  return state.cart.products;
+export const orderedProductSelector = (state: RootState) => {
+  return state.cart.product;
 };
 
 export const orderSelector = (state: RootState) => {
   return {
-    products: state.cart.products.map((product) => ({
-      product: product._id,
-      price: product.price, 
-      quantity: product.orderQuantity,
-      sellerID: product.sellerID,
-    })),
-    shippingAddress: `${state.cart.shippingAddress} - ${state.cart.city}`,
-    paymentMethod: "Online",
+    product: state.cart.product._id,
+    address: state.cart.address,
   };
 };
 
-
-// Payment
-export const subTotalSelector = (state: RootState) => {
-  return state.cart.products.reduce((acc, product) => {
-    return acc + product.price * product.orderQuantity;
-  }, 0);
-};
-
-export const shippingCostSelector = (state: RootState) => {
-  if (
-    state.cart.city &&
-    state.cart.city === "Dhaka" &&
-    state.cart.products.length > 0
-  ) {
-    return 60;
-  } else if (
-    state.cart.city &&
-    state.cart.city !== "Dhaka" &&
-    state.cart.products.length > 0
-  ) {
-    return 120;
-  } else {
-    return 0;
-  }
-};
-
-export const grandTotalSelector = (state: RootState) => {
-  const subTotal = subTotalSelector(state);
-  const shippingCost = shippingCostSelector(state);
-  return subTotal + shippingCost;
-};
-
 // Address
-
-export const citySelector = (state: RootState) => {
-  return state.cart.city;
-};
-export const shippingAddressSelector = (state: RootState) => {
-  return state.cart.shippingAddress;
+export const addressSelector = (state: RootState) => {
+  return state.cart.address;
 };
 
-export const {
-  addProduct,
-  incrementOrderQuantity,
-  decrementOrderQuantity,
-  removeProduct,
-  updateCity,
-  updateShippingAddress,
-} = cartSlice.actions;
+export const { addToCart, removeFromCart, addAddress } = cartSlice.actions;
 export default cartSlice.reducer;

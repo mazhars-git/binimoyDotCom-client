@@ -2,9 +2,8 @@ import { Button } from "@/components/ui/button";
 import ProductCard from "@/components/ui/core/ProductCard";
 import RUContainer from "@/components/ui/core/RUContainer";
 import { getAllListings } from "@/services/Product";
-import { TProduct } from "@/types";
+import { IProduct } from "@/types";
 import Link from "next/link";
-import React from "react";
 
 const FeaturedProducts = async () => {
   const { data: products } = await getAllListings();
@@ -17,7 +16,7 @@ const FeaturedProducts = async () => {
         </Link>
       </div>
       <div className="grid grid-cols-4 gap-4 mt-10">
-        {products?.slice(0, 4).map((product: TProduct, idx: number) => (
+        {products?.slice(0, 4).map((product: IProduct, idx: number) => (
           <ProductCard key={idx} product={product} />
         ))}
       </div>
