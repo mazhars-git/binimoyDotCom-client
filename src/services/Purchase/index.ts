@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-
+ 
 export const getAllPurchases = async (buyerId: string) => {
   try {
     const response = await fetch(

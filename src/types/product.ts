@@ -1,3 +1,5 @@
+import { IUserDeatails } from "./user";
+
 export type Condition = "new" | "like new" | "used" | "for parts";
 export type Category =
   | "Electronics"
@@ -67,6 +69,7 @@ export interface IProduct {
   title: string;
   description: string;
   price: number;
+  userID?:string;
   condition: string;
   quantity: number;
   orderQuantity: number;
@@ -77,3 +80,5 @@ export interface IProduct {
   createdAt?: string;
   updatedAt?: string;
 }
+
+

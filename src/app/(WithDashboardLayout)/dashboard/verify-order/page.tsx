@@ -1,10 +1,11 @@
-import { verifyOrder } from "@/services/Cart";
+import VerifyOrder from "@/components/modules/purchase/VerifyOrder";
 
 const VerifiyOrderPage = async () => {
+  
     
   return (
     <div>
-      <h1>Verifiy Order Page</h1>
+      <VerifyOrder/>
     </div>
   );
 };

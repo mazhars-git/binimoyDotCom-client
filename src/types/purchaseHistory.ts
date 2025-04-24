@@ -1,12 +1,15 @@
-import { TProduct } from "./product";
-import { IUser } from "./user";
+import { IProduct } from "./product";
+import { IUserDeatails } from "./user";
+
+export type TOrderStatus = "pending" | "completed";
 
 export type TTransaction = {
   _id: string;
-  buyerId: IUser;
-  sellerId: IUser;
-  product: TProduct;
-  status: "pending" | "completed";
+  buyerId: IUserDeatails;
+  sellerId: IUserDeatails;
+  product: IProduct;
+  status: TOrderStatus;
+  address: string;
   transaction: {
     id: string;
     transactionStatus: string;
@@ -17,5 +20,4 @@ export type TTransaction = {
     date_time: string;
     payment_status: string;
   };
-  createdAt: string;
 };
