@@ -15,24 +15,24 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useUser } from "@/context/UserContext";
-import { addProduct } from "@/redux/features/cartSlice";
+import { addToCart } from "@/redux/features/cartSlice";
 import { useAppDispatch } from "@/redux/hook";
 import { createWishlist } from "@/services/wishlist";
 
-import { TProduct } from "@/types";
+import { IProduct } from "@/types";
 import { Heart, ShoppingBag, Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-const ProductCard = ({ product }: { product: TProduct }) => {
+const ProductCard = ({ product }: { product: IProduct }) => {
   const dispatch = useAppDispatch();
 
-  const handleAddProduct = (product: TProduct) => {
-    dispatch(addProduct(product));
+  const handleAddProduct = (product: IProduct) => {
+    dispatch(addToCart(product));
   };
-  const { user, userDetail, setIsLoading } = useUser();
+  const { userDetail } = useUser();
 
   const router = useRouter();
 

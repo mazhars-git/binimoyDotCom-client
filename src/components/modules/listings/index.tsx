@@ -2,25 +2,28 @@
 
 import { Button } from "@/components/ui/button";
 import { ABTable } from "@/components/ui/core/ABTable";
+import { deleteListedProduct } from "@/services/Product";
 import { IProduct } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { Edit, Eye, Plus, Trash } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
-const ManageListings = ({
-  products,
-  meta,
-}: {
-  products: IProduct[];
-  meta: any;
-}) => {
+const ManageListings = ({ products }: { products: IProduct[]; meta: any }) => {
   const router = useRouter();
 
-  const handleView = (product: IProduct) => {
-    console.log("Viewing:", product);
-  };
-  const handleDelete = (productId: string) => {
+  const handleDelete = async (productId: string) => {
+    try {
+      const res = await deleteListedProduct(productId);
+      console.log(res);
+      if (!res) {
+        toast.message("Deleting Failed");
+      }
+      toast.success(res?.message);
+    } catch (error) {
+      console.error("Product deleting failed", error);
+    }
     console.log("Deleting:", productId);
   };
 
@@ -63,7 +66,8 @@ const ManageListings = ({
           <button
             className="text-slate-500 hover:text-sky-500"
             title="View"
-            onClick={() => handleView(row.original)}>
+            onClick={() => router.push(`/products/${row.original._id}`)}
+          >
             <Eye className="w-5 h-5" />
           </button>
 
@@ -74,14 +78,16 @@ const ManageListings = ({
               router.push(
                 `/dashboard/listing/update-listing/${row.original._id}`
               )
-            }>
+            }
+          >
             <Edit className="w-5 h-5" />
           </button>
 
           <button
             className="text-red-500 hover:text-red-700"
             title="Delete"
-            onClick={() => handleDelete(row.original._id as string)}>
+            onClick={() => handleDelete(row.original._id as string)}
+          >
             <Trash className="w-5 h-5" />
           </button>
         </div>
@@ -96,7 +102,8 @@ const ManageListings = ({
         <div className="flex items-center gap-2">
           <Button
             onClick={() => router.push("/dashboard/listing/add-listing")}
-            size="sm">
+            size="sm"
+          >
             Add Product <Plus />
           </Button>
         </div>
