@@ -3,3 +3,4 @@ export * from "./product";
 export * from "./meta";
 export * from "./purchaseHistory";
 export * from "./message";
+export * from "./wishlist";
