@@ -81,8 +81,7 @@ const ManageWishlist: React.FC<ManageWishlistProps> = ({ products }) => {
         {products.map((item: IWishlist) => (
           <Card
             key={item._id}
-            className="rounded-2xl shadow-md transition hover:shadow-lg"
-          >
+            className="rounded-2xl shadow-md transition hover:shadow-lg">
             <CardHeader>
               <CardTitle>{item?.productId?.title}</CardTitle>
               <CardDescription className="line-clamp-2">
@@ -103,7 +102,9 @@ const ManageWishlist: React.FC<ManageWishlistProps> = ({ products }) => {
                   {item?.productId?.category}
                 </p>
                 <p className="font-semibold text-lg text-foreground">
+
                   $ {item?.productId?.price}
+
                 </p>
                 <p className="text-sm text-muted-foreground capitalize">
                   {item?.productId?.condition}
@@ -115,23 +116,26 @@ const ManageWishlist: React.FC<ManageWishlistProps> = ({ products }) => {
                 <Button
                   variant="default"
                   size="sm"
+
                   onClick={() => handleAddToCart(item?.productId, item?._id)}
                 >
+
                   Add to Cart
                 </Button>
                 <Button
                   variant="outline"
                   size="sm"
                   disabled={item?.productId?.status !== "available"}
+
                   onClick={() => handleViewDetails(item?.productId._id)}
                 >
+
                   View Details
                 </Button>
                 <Button
                   variant="destructive"
                   size="sm"
-                  onClick={() => handleRemoveFromWishlist(item._id)}
-                >
+                  onClick={() => handleRemoveFromWishlist(item._id)}>
                   Remove
                 </Button>
               </div>
