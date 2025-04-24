@@ -4,6 +4,7 @@ import { RootState } from "../store";
 
 export interface CartProduct extends IProduct {
   orderQuantity: number;
+  sellerID: string;
 }
 
 interface InitialState {
@@ -80,12 +81,15 @@ export const orderSelector = (state: RootState) => {
   return {
     products: state.cart.products.map((product) => ({
       product: product._id,
+      price: product.price, 
       quantity: product.orderQuantity,
+      sellerID: product.sellerID,
     })),
     shippingAddress: `${state.cart.shippingAddress} - ${state.cart.city}`,
     paymentMethod: "Online",
   };
 };
+
 
 // Payment
 export const subTotalSelector = (state: RootState) => {

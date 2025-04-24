@@ -54,6 +54,7 @@ export type TProduct = {
     role: "user" | "admin";
     isBlocked: boolean;
   };
+  sellerID?: string;
   location: string;
   images: string[];
   isActive?: boolean;

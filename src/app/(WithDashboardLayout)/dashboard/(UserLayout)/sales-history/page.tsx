@@ -1,6 +1,6 @@
 import SalesHistory from "@/components/modules/sales";
 import { getCurrentUser } from "@/services/AuthService";
-import { getAllSales } from "@/services/Purchase";
+import { getAllSales } from "@/services/sales";
 import { Metadata } from "next";
 
 //metadata
