@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { useUser } from "@/context/UserContext";
 import {
   grandTotalSelector,
   orderSelector,
@@ -8,6 +9,7 @@ import {
 } from "@/redux/features/cartSlice";
 import { useAppSelector } from "@/redux/hook";
 import { createOrder } from "@/services/Cart";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 export default function PaymentDetails() {
@@ -15,15 +17,45 @@ export default function PaymentDetails() {
   const shippingCost = useAppSelector(shippingCostSelector);
   const order = useAppSelector(orderSelector);
   const grandTotal = useAppSelector(grandTotalSelector);
+  const router = useRouter();
+  const { userDetail } = useUser();
+  console.log(userDetail)
+
 
   const handleOrder = async () => {
     try {
-      const res = await createOrder(order);
-    } catch (error: any) {
-      toast.error(error.message);
+      if (!userDetail?._id) {
+        toast.error("Please login...");
+        router.push("/login");
+        return;
+      }
+
+      const productsWithSeller = order.products.map((product) => ({
+        product: product.product,
+        sellerID: product.sellerID, 
+        quantity: product.quantity,
+      }));
+
+      const payload = {
+        buyerID: userDetail._id,
+        products: productsWithSeller,
+        address: order.shippingAddress,
+      };
+
+      const result = await createOrder(payload);
+
+      if (result?.success && result?.data?.checkout_url) {
+        toast.success(result?.message);
+        window.location.href = result.data.checkout_url;
+      } else {
+        console.log(result)
+        toast.error(result?.message || "Order failed");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Something went wrong while placing the order.");
     }
   };
-
   return (
     <div className="border-2 border-gray bg-background brightness-105 rounded-md col-span-4 h-fit p-5">
       <h1 className="text-2xl font-bold">Payment Details</h1>
@@ -40,7 +72,7 @@ export default function PaymentDetails() {
         </div>
       </div>
       <div className="flex justify-between mt-10 mb-5">
-        <p className="text-gray-500 ">Grand Total</p>
+        <p className="text-gray-500 ">Grand Total</p> 
         {/* <p className="font-semibold">{currencyFormatter(grandTotal)}</p> */}
         <p className="font-semibold">{grandTotal}</p>
       </div>
