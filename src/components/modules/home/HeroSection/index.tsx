@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import styles from "./HeroSection.module.css";
 import RUContainer from "@/components/ui/core/RUContainer";
+import Link from "next/link";
 
 const HeroSection = () => {
   return (
@@ -18,15 +19,22 @@ const HeroSection = () => {
               Save big this Black Friday with unbeatable deals on tech, home
               essentials, <br /> fashion, and more! Limited stock.
             </p>
-            <Button size="lg" className="mr-5 rounded-full">
-              Buy Now
-            </Button>
-            <Button
-              size="lg"
-              className="rounded-full bg-white text-black hover:bg-gray-100"
-            >
-              All Products
-            </Button>
+            <Link href="/products">
+              <Button
+                size="lg"
+                className="mr-5 rounded-full hover:bg-slate-100 hover:text-black"
+              >
+                Buy Now
+              </Button>
+            </Link>
+            <Link href="/products">
+              <Button
+                size="lg"
+                className="rounded-full bg-white text-black hover:bg-gray-100"
+              >
+                All Products
+              </Button>
+            </Link>
           </div>
         </div>
       </div>
