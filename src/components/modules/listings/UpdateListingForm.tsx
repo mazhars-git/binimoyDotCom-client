@@ -1,417 +1,135 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { addProductListings, updateListedProduct } from "@/services/Product";
-import { useRouter } from "next/navigation";
-import { useRef, useState } from "react";
-import { SubmitHandler, FieldValues, useForm } from "react-hook-form";
-import { toast } from "sonner";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { imageUpload } from "@/lib/imageUpload";
-import Image from "next/image";
-import { Upload } from "lucide-react";
-import axios from "axios";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Categories } from "@/constants/categories";
-import { IProduct } from "@/types";
 
-// Define the form validation schema using zod
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { IProduct, categories } from "@/types";
 
 const productSchema = z.object({
-  title: z.string().min(3, "Title is required"),
-  description: z.string().min(10, "Description is required"),
-  price: z.number().min(1, "Price is required"),
-  category: z.string().min(1, "Category is required"),
-  images: z.array(z.string()).min(1, "At least one image is required"),
-  quantity: z.number().min(1, "Quantity is required"),
-  status: z.string().min(1, "Status is required"),
-  condition: z.string().min(1, "Condition is required"),
-  location: z.string().min(1, "Location is required"),
+  title: z.string().min(3),
+  description: z.string().min(10),
+  price: z.number().min(0),
+  quantity: z.number().min(0),
+  condition: z.enum(["new", "like new", "used", "for parts"]),
+  category: z.enum([
+    "Electronics",
+    "Furniture",
+    "Clothing & Accessories",
+    "Books & Magazines",
+    "Vehicles",
+    "Home Appliances",
+    "Sports & Outdoors",
+    "Toys & Games",
+    "Beauty & Personal Care",
+    "Tools & Hardware",
+    "Collectibles & Art",
+    "Pet Supplies",
+    "Musical Instruments",
+    "Office Supplies & Stationery",
+    "Mobile Phones & Accessories",
+    "Computers & Laptops",
+    "Gaming Consoles & Accessories",
+    "Cameras & Photography",
+    "Baby Products",
+    "Jewelry & Watches",
+    "Garden & Outdoor",
+    "Kitchenware & Dining",
+    "Health & Wellness",
+    "Car Accessories & Parts",
+    "Real Estate",
+    "Bicycles & Accessories",
+    "Tickets & Vouchers",
+    "Handmade & Crafts",
+    "Antiques",
+    "Industrial Equipment",
+    "Farming Tools & Machinery",
+    "Services",
+    "Other",
+  ]),
+  images: z.array(z.string().url()).min(1),
+  location: z.string(),
+  status: z.enum(["available", "sold"]),
 });
 
-// Type for the form data
 type ProductFormData = z.infer<typeof productSchema>;
 
-export default function UpdateListingForm({ product }: { product: IProduct }) {
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const router = useRouter();
+type Props = {
+  defaultValues: IProduct;
+  onSubmit: (data: ProductFormData) => void;
+};
 
-  const form = useForm<ProductFormData>({
+export default function UpdateProductForm({ defaultValues, onSubmit }: Props) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ProductFormData>({
     resolver: zodResolver(productSchema),
-    mode: "onBlur",
-    defaultValues: {
-      title: product?.title || "",
-      description: product?.description || "",
-      price: product?.price || 0,
-      category: product?.category || "",
-      images: product?.images || "",
-      quantity: product?.quantity || 1,
-      status: product?.status || "",
-    },
+    defaultValues,
   });
 
-  const {
-    formState: { isSubmitting },
-  } = form;
-
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    // Check file type
-    if (!file.type.includes("image")) {
-      toast.error("Please upload an image file");
-      return;
-    }
-
-    // Check file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      toast.error("File size should be less than 5MB");
-      return;
-    }
-
-    // Create a fresh AbortController for this request
-    const controller = new AbortController();
-    const signal = controller.signal;
-
-    // Toast step
-    const toastId = toast.loading("Uploading image...");
-
-    // Set a timeout to cancel the request if it takes too long (60s)
-    const timeoutId = setTimeout(() => {
-      controller.abort();
-      toast.error("Upload took too long. You can add an image later.", {
-        id: toastId,
-      });
-    }, 60000);
-
-    try {
-      // Upload image with timeout handling
-      const image_data = await imageUpload(file, { signal });
-
-      if (image_data?.success) {
-        const imageUrl = image_data.data.display_url;
-        form.setValue("images", [imageUrl]);
-        // images.push(imageUrl);
-        setPreviewImage(imageUrl);
-        toast.success("Image uploaded successfully!", { id: toastId });
-      } else {
-        throw new Error("Image upload failed");
-      }
-    } catch (error: any) {
-      if (axios.isCancel(error)) {
-        toast.error(
-          "Image upload was cancelled. Upload took too long. You can add an image later.",
-          { id: toastId }
-        );
-      } else {
-        toast.error(error.message || "Image upload error, please try again.");
-      }
-
-      // Reset image field so user can retry
-      form.setValue("images", []);
-      setPreviewImage(null);
-    } finally {
-      clearTimeout(timeoutId); // Ensure timeout is cleared
-    }
-  };
-
-  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    const modifiedData = {
-      ...data,
-      price: parseFloat(data.price),
-      status: data.status.toString(),
-      title: data.title,
-      description: data.description,
-      condition: data.condition,
-      category: data.category,
-      quantity: parseInt(data.quantity),
-      location: data.location,
-      images: data.images, // Ensure images are included
-    };
-    try {
-      const res = await updateListedProduct(
-        modifiedData,
-        product?._id as string
-      );
-      if (res.success) {
-        toast.success(res.message);
-        router.push("/dashboard/listing");
-      } else {
-        toast.error(res.message);
-      }
-    } catch (err: any) {
-      console.error(err);
-    }
-  };
-
   return (
-    <div className="border-2 border-slate-300 rounded-xl flex-grow max-w-2xl p-5">
-      <div className="flex items-center justify-between space-x-4 mb-5">
-        <h1 className="text-3xl font-bold">Adol Bodol</h1>
-        <h1 className="text-3xl font-bold">List Product</h1>
-      </div>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="flex justify-between items-center border-b py-3 my-5">
-            <p className="text-primary font-bold text-xl">Basic Information</p>
-          </div>
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <input {...register("title")} placeholder="Title" />
+      {errors.title && <p>{errors.title.message}</p>}
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <FormField
-              control={form.control}
-              name="title"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Product Title</FormLabel>
-                  <FormControl>
-                    <Input {...field} value={field.value || ""} />
-                  </FormControl>
-                  <FormDescription />
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+      <textarea {...register("description")} placeholder="Description" />
+      {errors.description && <p>{errors.description.message}</p>}
 
-            <FormField
-              control={form.control}
-              name="location"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Location</FormLabel>
-                  <FormControl>
-                    <Input {...field} value={field.value || ""} />
-                  </FormControl>
-                  <FormDescription />
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+      <input
+        type="number"
+        {...register("price", { valueAsNumber: true })}
+        placeholder="Price"
+      />
+      {errors.price && <p>{errors.price.message}</p>}
 
-            <FormField
-              control={form.control}
-              name="price"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Price*</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      placeholder="Enter price"
-                      {...field}
-                      onChange={(e) => {
-                        const value = e.target.value;
-                        field.onChange(value === "" ? "" : parseFloat(value));
-                      }}
-                      value={field.value === 0 ? "" : field.value}
-                      className="dark:bg-slate-200 placeholder:dark:text-slate-400 dark:text-slate-900 font-medium"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+      <input
+        type="number"
+        {...register("quantity", { valueAsNumber: true })}
+        placeholder="Quantity"
+      />
+      {errors.quantity && <p>{errors.quantity.message}</p>}
 
-            <FormField
-              control={form.control}
-              name="quantity"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Quantity*</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      placeholder="Enter quantity"
-                      {...field}
-                      onChange={(e) => {
-                        const value = e.target.value;
-                        field.onChange(value === "" ? "" : parseFloat(value));
-                      }}
-                      value={field.value === 0 ? "" : field.value}
-                      className="dark:bg-slate-200 placeholder:dark:text-slate-400 dark:text-slate-900 font-medium"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
+      <select {...register("condition")}>
+        {["new", "like new", "used", "for parts"].map((val) => (
+          <option key={val} value={val}>
+            {val}
+          </option>
+        ))}
+      </select>
 
-          <div className="pt-5 grid grid-cols-3 gap-4 items-center">
-            <div className="">
-              <FormField
-                control={form.control}
-                name="condition"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Condition</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select Condition" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="new">new</SelectItem>
-                        <SelectItem value="like new">like new</SelectItem>
-                        <SelectItem value="used">used</SelectItem>
-                        <SelectItem value="for parts">for parts</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+      {/* <select {...register("category")}>
+        {Object.values(Category).map((cat) => (
+          <option key={cat} value={cat}>
+            {cat}
+          </option>
+        ))}
+      </select> */}
 
-            <div className="">
-              <FormField
-                control={form.control}
-                name="status"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Status</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select Product Status" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="available">available</SelectItem>
-                        <SelectItem value="sold">sold</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+      <select {...register("category")}>
+        {categories.map((cat) => (
+          <option key={cat} value={cat}>
+            {cat}
+          </option>
+        ))}
+      </select>
 
-            <div className="">
-              <FormField
-                control={form.control}
-                name="category"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Category</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select Category" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {Categories.map((category) => (
-                          <SelectItem key={category} value={category}>
-                            {category}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
+      <input {...register("location")} placeholder="Location" />
+      {errors.location && <p>{errors.location.message}</p>}
 
-          <div>
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem className="pt-5">
-                  <FormLabel>Description</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      className="h-36 resize-none"
-                      {...field}
-                      value={field.value || ""}
-                    />
-                  </FormControl>
-                  <FormDescription />
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
+      <select {...register("status")}>
+        {["available", "sold"].map((val) => (
+          <option key={val} value={val}>
+            {val}
+          </option>
+        ))}
+      </select>
 
-          <div>
-            {/* Image Upload with Preview */}
-            <FormField
-              control={form.control}
-              name="images"
-              render={() => (
-                <FormItem className="">
-                  <FormLabel>Product Image</FormLabel>
-                  <div className="flex flex-col gap-4">
-                    <input
-                      type="file"
-                      ref={fileInputRef}
-                      onChange={handleFileChange}
-                      accept="image/*"
-                      className="hidden"
-                    />
-                    <div
-                      onClick={() => fileInputRef.current?.click()}
-                      className="cursor-pointer border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 flex flex-col items-center justify-center hover:border-gray-400 dark:hover:border-gray-500 transition-colors"
-                    >
-                      {previewImage ? (
-                        <div className="w-full">
-                          <Image
-                            src={previewImage}
-                            width={200}
-                            height={200}
-                            alt="Product preview"
-                            className="mx-auto max-h-48 object-contain"
-                          />
-                          <p className="text-center mt-2 text-sm text-gray-500 dark:text-gray-400">
-                            Click to change image
-                          </p>
-                        </div>
-                      ) : (
-                        <>
-                          <Upload className="h-12 w-12 text-gray-400" />
-                          <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                            Click to upload product image
-                          </p>
-                          <p className="text-xs text-gray-400 dark:text-gray-500">
-                            PNG, JPG, GIF up to 5MB
-                          </p>
-                        </>
-                      )}
-                    </div>
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
+      <input {...register("images.0")} placeholder="Image URL 1" />
+      {errors.images && <p>{errors.images.message}</p>}
 
-          <Button type="submit" className="mt-5 w-full" disabled={isSubmitting}>
-            {isSubmitting ? "Updating Product....." : "Update Product"}
-          </Button>
-        </form>
-      </Form>
-    </div>
+      <button type="submit">Update Product</button>
+    </form>
   );
 }
