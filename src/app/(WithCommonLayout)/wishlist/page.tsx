@@ -6,11 +6,10 @@ const WishlistPage = async () => {
   const UserData = await getCurrentUserDetails();
 
   const { data } = await getAllWishlist(UserData?.data?._id);
-  console.log(data);
 
   return (
     <div className="mx-5">
-      <ManageWishlist products={data?.items} />
+      <ManageWishlist products={data} />
     </div>
   );
 };

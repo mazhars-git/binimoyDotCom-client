@@ -1,19 +1,20 @@
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { removeFromCart } from "@/redux/features/cartSlice";
+import { useAppDispatch } from "@/redux/hook";
 import { IProduct } from "@/types";
-import { Minus, Plus, Trash } from "lucide-react";
+
+import { Trash } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 
 export default function CartProductCard({ product }: { product: IProduct }) {
+  const dispatch = useAppDispatch();
+  const handleRemove = () => {
+    dispatch(removeFromCart());
+  };
+
   return (
-    <div className="bg-white rounded-lg flex p-5 gap-5">
+    <div className="text-white dark:text-slate-600 bg-slate-400 dark:bg-slate-200 rounded-lg flex p-5 py-12 gap-5">
       <div className="h-full w-32 rounded-md overflow-hidden">
         <Image
           width={200}
@@ -26,7 +27,7 @@ export default function CartProductCard({ product }: { product: IProduct }) {
         <h1 className="text-xl font-semibold">{product?.title}</h1>
         <div className="flex gap-5 my-2">
           <p>
-            <span className="text-gray-500">Stock Availability:</span>{" "}
+            <span className="">Stock Availability:</span>{" "}
             <span className="font-semibold">{product?.status}</span>
           </p>
         </div>
@@ -37,16 +38,13 @@ export default function CartProductCard({ product }: { product: IProduct }) {
             {product.price}
           </h2>
           <div className="flex items-center gap-8">
-            <p className="text-gray-500 font-semibold">Quantity:</p>
-            <Button variant="outline" className="size-8 rounded-sm">
-              <Minus />
-            </Button>
-            <p className="font-semibold text-xl p-2">1</p>
-            <Button variant="outline" className="size-8 rounded-sm">
-              <Plus />
-            </Button>
+            <p className="font-semibold">Quantity: {product.quantity}</p>
 
-            <Button variant="outline" className="size-8 rounded-sm">
+            <Button
+              onClick={() => handleRemove()}
+              variant="outline"
+              className="size-8 rounded-sm"
+            >
               <Trash className="text-red-500/50" />
             </Button>
           </div>

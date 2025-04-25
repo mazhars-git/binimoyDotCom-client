@@ -1,77 +1,148 @@
+"use client";
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
-import { TProduct } from "@/types";
 import Image from "next/image";
-import React from "react";
-import { Eye } from "lucide-react";
-interface ManageWishlistProps {
-  products: TProduct[];
-}
+import { HeartOff } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { IProduct } from "@/types";
+import { IWishlist } from "@/types/wishlist";
+import { deleteSingleWishlist } from "@/services/wishlist";
+import { toast } from "sonner";
+import { useAppDispatch } from "@/redux/hook";
+import { addToCart } from "@/redux/features/cartSlice";
+
+type ManageWishlistProps = {
+  products: IWishlist[];
+};
 
 const ManageWishlist: React.FC<ManageWishlistProps> = ({ products }) => {
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+
+  const handleAddToCart = async (product: IProduct, id: string) => {
+    dispatch(addToCart(product));
+    if (product._id) {
+      await deleteSingleWishlist(id);
+      toast.success("Product added to cart");
+      router.push("/cart");
+    } else {
+      toast.error("Product ID is missing");
+    }
+  };
+
+  const handleViewDetails = (productId: string) => {
+    router.push(`/products/${productId}`);
+  };
+
+  const handleRemoveFromWishlist = async (productId: string) => {
+    try {
+      const result = await deleteSingleWishlist(productId);
+      if (result?.success) {
+        toast.success(result?.message);
+      } else {
+        toast.error(result?.message);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  if (!products || products.length === 0) {
+    return (
+      <div className="flex justify-center items-center h-[70vh]">
+        <div className="bg-muted rounded-xl p-8 shadow-lg text-center max-w-md">
+          <HeartOff className="mx-auto text-muted-foreground mb-4" size={48} />
+          <p className="text-2xl font-semibold text-muted-foreground mb-2">
+            Your wishlist is empty
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Start adding your favorite items now!
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="grid gap-4 p-4 max-w-4xl mx-auto">
-      {products.map((product: TProduct) => (
-        <Card
-          key={product._id}
-          className="rounded-lg shadow-lg bg-white p-6 flex flex-col md:flex-row items-center justify-between w-full gap-4 transition-all hover:shadow-xl"
-        >
-          <div className="flex flex-col md:flex-row items-center justify-between w-full gap-4">
-            {/* Image section */}
-            <div className="flex-shrink-0">
+    <div>
+      <div>
+        <h2 className="text-2xl text-center mt-5 font-bold mb-4">
+          Your Wishlist
+        </h2>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
+        {products.map((item: IWishlist) => (
+          <Card
+            key={item._id}
+            className="rounded-2xl shadow-md transition hover:shadow-lg">
+            <CardHeader>
+              <CardTitle>{item?.productId?.title}</CardTitle>
+              <CardDescription className="line-clamp-2">
+                {item?.productId?.description}
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
               <Image
-                // src={product?.images[0] || ""}
-                src={product.images[0] || ""}
-                alt={product.title}
-                width={120}
-                height={120}
-                className="rounded-lg object-cover shadow-md"
+                src={item?.productId.images[0] || ""}
+                alt={item?.productId.title}
+                width={300}
+                height={200}
+                className="w-full h-48 object-cover rounded-lg mb-4"
               />
-            </div>
 
-            {/* Info section */}
-            <div className="flex flex-col md:flex-row items-center justify-start gap-4 w-full">
-              <h3 className="text-xl font-semibold text-gray-800">
-                {product.title}
-              </h3>
+              <div className="flex justify-between items-center mb-4">
+                <p className="font-semibold text-lg text-foreground">
+                  {item?.productId?.category}
+                </p>
+                <p className="font-semibold text-lg text-foreground">
 
-              {/* Price */}
-              <p className="text-lg text-gray-700">{product.price}</p>
+                  $ {item?.productId?.price}
 
-              {/* Stock */}
-              <p
-                className={cn(
-                  "text-sm font-medium",
-                  product.status === "available"
-                    ? "text-green-600"
-                    : "text-red-500"
-                )}
-              >
-                {product.status}
-              </p>
+                </p>
+                <p className="text-sm text-muted-foreground capitalize">
+                  {item?.productId?.condition}
+                </p>
+              </div>
 
-              {/*  View Button with Eye Icon */}
+              {/* Buttons */}
+              <div className="flex flex-col gap-2">
+                <Button
+                  variant="default"
+                  size="sm"
 
-              <Button
-                variant="outline"
-                className="mt-4 md:mt-0 flex items-center gap-1 border-gray-300 text-gray-700 hover:text-blue-600 hover:border-gray-500 transition-colors"
-              >
-                <Eye className="w-4 h-4" />
-                View
-              </Button>
+                  onClick={() => handleAddToCart(item?.productId, item?._id)}
+                >
 
-              {/* Add to Cart button */}
-              <Button
-                className="mt-4 md:mt-0 py-2 px-4 text-white font-semibold rounded-lg bg-blue-600 hover:bg-blue-700 transition-all"
-                disabled={product.status !== "available"}
-              >
-                Add to Cart
-              </Button>
-            </div>
-          </div>
-        </Card>
-      ))}
+                  Add to Cart
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  disabled={item?.productId?.status !== "available"}
+
+                  onClick={() => handleViewDetails(item?.productId._id)}
+                >
+
+                  View Details
+                </Button>
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  onClick={() => handleRemoveFromWishlist(item._id)}>
+                  Remove
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
     </div>
   );
 };

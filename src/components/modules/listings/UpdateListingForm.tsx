@@ -11,17 +11,13 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { addProductListings, updateListedProduct } from "@/services/Product";
-import { useRouter } from "next/navigation";
-import { useRef, useState } from "react";
+import { getSingleListing, updateListedProduct } from "@/services/Product";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { SubmitHandler, FieldValues, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { imageUpload } from "@/lib/imageUpload";
-import Image from "next/image";
-import { Upload } from "lucide-react";
-import axios from "axios";
 import {
   Select,
   SelectContent,
@@ -30,7 +26,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Categories } from "@/constants/categories";
-import { IProduct } from "@/types";
+import { TProduct } from "@/types";
+import Spinner from "@/components/ui/core/spinner";
 
 // Define the form validation schema using zod
 
@@ -39,32 +36,33 @@ const productSchema = z.object({
   description: z.string().min(10, "Description is required"),
   price: z.number().min(1, "Price is required"),
   category: z.string().min(1, "Category is required"),
-  images: z.array(z.string()).min(1, "At least one image is required"),
   quantity: z.number().min(1, "Quantity is required"),
-  status: z.string().min(1, "Status is required"),
   condition: z.string().min(1, "Condition is required"),
   location: z.string().min(1, "Location is required"),
 });
 
-// Type for the form data
 type ProductFormData = z.infer<typeof productSchema>;
 
-export default function UpdateListingForm({ product }: { product: IProduct }) {
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+export const UpdateListingForm = () => {
+  const params = useParams();
+
+  const productId = params.productId;
+
   const router = useRouter();
+  const [loading, setLoading] = useState<boolean>(false);
+  const [productData, setProductData] = useState<TProduct | null>(null);
 
   const form = useForm<ProductFormData>({
     resolver: zodResolver(productSchema),
     mode: "onBlur",
     defaultValues: {
-      title: product?.title || "",
-      description: product?.description || "",
-      price: product?.price || 0,
-      category: product?.category || "",
-      images: product?.images || "",
-      quantity: product?.quantity || 1,
-      status: product?.status || "",
+      title: productData?.title || "",
+      description: productData?.description || "",
+      price: productData?.price || 0,
+      category: productData?.category || "",
+      quantity: productData?.quantity || 1,
+      condition: productData?.condition || "",
+      location: productData?.location || "",
     },
   });
 
@@ -72,85 +70,51 @@ export default function UpdateListingForm({ product }: { product: IProduct }) {
     formState: { isSubmitting },
   } = form;
 
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!productId) return;
+      setLoading(true);
+      try {
+        const res = await getSingleListing(productId as string);
+        setProductData(res?.data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [productId]);
 
-    // Check file type
-    if (!file.type.includes("image")) {
-      toast.error("Please upload an image file");
-      return;
-    }
-
-    // Check file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      toast.error("File size should be less than 5MB");
-      return;
-    }
-
-    // Create a fresh AbortController for this request
-    const controller = new AbortController();
-    const signal = controller.signal;
-
-    // Toast step
-    const toastId = toast.loading("Uploading image...");
-
-    // Set a timeout to cancel the request if it takes too long (60s)
-    const timeoutId = setTimeout(() => {
-      controller.abort();
-      toast.error("Upload took too long. You can add an image later.", {
-        id: toastId,
+  useEffect(() => {
+    if (productData) {
+      form.reset({
+        title: productData.title,
+        description: productData.description,
+        price: productData.price,
+        category: productData.category,
+        quantity: productData.quantity,
+        condition: productData.condition,
+        location: productData.location,
       });
-    }, 60000);
-
-    try {
-      // Upload image with timeout handling
-      const image_data = await imageUpload(file, { signal });
-
-      if (image_data?.success) {
-        const imageUrl = image_data.data.display_url;
-        form.setValue("images", [imageUrl]);
-        // images.push(imageUrl);
-        setPreviewImage(imageUrl);
-        toast.success("Image uploaded successfully!", { id: toastId });
-      } else {
-        throw new Error("Image upload failed");
-      }
-    } catch (error: any) {
-      if (axios.isCancel(error)) {
-        toast.error(
-          "Image upload was cancelled. Upload took too long. You can add an image later.",
-          { id: toastId }
-        );
-      } else {
-        toast.error(error.message || "Image upload error, please try again.");
-      }
-
-      // Reset image field so user can retry
-      form.setValue("images", []);
-      setPreviewImage(null);
-    } finally {
-      clearTimeout(timeoutId); // Ensure timeout is cleared
     }
-  };
+  }, [productData, form]);
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     const modifiedData = {
       ...data,
-      price: parseFloat(data.price),
-      status: data.status.toString(),
       title: data.title,
       description: data.description,
-      condition: data.condition,
+      price: parseFloat(data.price),
       category: data.category,
       quantity: parseInt(data.quantity),
+      condition: data.condition,
       location: data.location,
-      images: data.images, // Ensure images are included
     };
     try {
       const res = await updateListedProduct(
         modifiedData,
-        product?._id as string
+        productData?._id as string
       );
       if (res.success) {
         toast.success(res.message);
@@ -163,12 +127,21 @@ export default function UpdateListingForm({ product }: { product: IProduct }) {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Spinner size="icon" />
+      </div>
+    );
+  }
+
   return (
     <div className="border-2 border-slate-300 rounded-xl flex-grow max-w-2xl p-5">
       <div className="flex items-center justify-between space-x-4 mb-5">
-        <h1 className="text-3xl font-bold">Adol Bodol</h1>
-        <h1 className="text-3xl font-bold">List Product</h1>
+        <h1 className="text-3xl font-bold">AdolBodol</h1>
+        <h1 className="text-3xl font-bold">Update Product</h1>
       </div>
+
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="flex justify-between items-center border-b py-3 my-5">
@@ -183,7 +156,7 @@ export default function UpdateListingForm({ product }: { product: IProduct }) {
                 <FormItem>
                   <FormLabel>Product Title</FormLabel>
                   <FormControl>
-                    <Input {...field} value={field.value || ""} />
+                    <Input {...field} />
                   </FormControl>
                   <FormDescription />
                   <FormMessage />
@@ -198,7 +171,7 @@ export default function UpdateListingForm({ product }: { product: IProduct }) {
                 <FormItem>
                   <FormLabel>Location</FormLabel>
                   <FormControl>
-                    <Input {...field} value={field.value || ""} />
+                    <Input {...field} />
                   </FormControl>
                   <FormDescription />
                   <FormMessage />
@@ -221,7 +194,6 @@ export default function UpdateListingForm({ product }: { product: IProduct }) {
                         const value = e.target.value;
                         field.onChange(value === "" ? "" : parseFloat(value));
                       }}
-                      value={field.value === 0 ? "" : field.value}
                       className="dark:bg-slate-200 placeholder:dark:text-slate-400 dark:text-slate-900 font-medium"
                     />
                   </FormControl>
@@ -245,7 +217,6 @@ export default function UpdateListingForm({ product }: { product: IProduct }) {
                         const value = e.target.value;
                         field.onChange(value === "" ? "" : parseFloat(value));
                       }}
-                      value={field.value === 0 ? "" : field.value}
                       className="dark:bg-slate-200 placeholder:dark:text-slate-400 dark:text-slate-900 font-medium"
                     />
                   </FormControl>
@@ -253,9 +224,7 @@ export default function UpdateListingForm({ product }: { product: IProduct }) {
                 </FormItem>
               )}
             />
-          </div>
 
-          <div className="pt-5 grid grid-cols-3 gap-4 items-center">
             <div className="">
               <FormField
                 control={form.control}
@@ -274,30 +243,6 @@ export default function UpdateListingForm({ product }: { product: IProduct }) {
                         <SelectItem value="like new">like new</SelectItem>
                         <SelectItem value="used">used</SelectItem>
                         <SelectItem value="for parts">for parts</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <div className="">
-              <FormField
-                control={form.control}
-                name="status"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Status</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select Product Status" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="available">available</SelectItem>
-                        <SelectItem value="sold">sold</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -342,65 +287,9 @@ export default function UpdateListingForm({ product }: { product: IProduct }) {
                 <FormItem className="pt-5">
                   <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Textarea
-                      className="h-36 resize-none"
-                      {...field}
-                      value={field.value || ""}
-                    />
+                    <Textarea className="h-36 resize-none" {...field} />
                   </FormControl>
                   <FormDescription />
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-
-          <div>
-            {/* Image Upload with Preview */}
-            <FormField
-              control={form.control}
-              name="images"
-              render={() => (
-                <FormItem className="">
-                  <FormLabel>Product Image</FormLabel>
-                  <div className="flex flex-col gap-4">
-                    <input
-                      type="file"
-                      ref={fileInputRef}
-                      onChange={handleFileChange}
-                      accept="image/*"
-                      className="hidden"
-                    />
-                    <div
-                      onClick={() => fileInputRef.current?.click()}
-                      className="cursor-pointer border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 flex flex-col items-center justify-center hover:border-gray-400 dark:hover:border-gray-500 transition-colors"
-                    >
-                      {previewImage ? (
-                        <div className="w-full">
-                          <Image
-                            src={previewImage}
-                            width={200}
-                            height={200}
-                            alt="Product preview"
-                            className="mx-auto max-h-48 object-contain"
-                          />
-                          <p className="text-center mt-2 text-sm text-gray-500 dark:text-gray-400">
-                            Click to change image
-                          </p>
-                        </div>
-                      ) : (
-                        <>
-                          <Upload className="h-12 w-12 text-gray-400" />
-                          <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                            Click to upload product image
-                          </p>
-                          <p className="text-xs text-gray-400 dark:text-gray-500">
-                            PNG, JPG, GIF up to 5MB
-                          </p>
-                        </>
-                      )}
-                    </div>
-                  </div>
                   <FormMessage />
                 </FormItem>
               )}
@@ -414,4 +303,4 @@ export default function UpdateListingForm({ product }: { product: IProduct }) {
       </Form>
     </div>
   );
-}
+};

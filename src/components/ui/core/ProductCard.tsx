@@ -15,24 +15,24 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useUser } from "@/context/UserContext";
-import { addProduct } from "@/redux/features/cartSlice";
+import { addToCart } from "@/redux/features/cartSlice";
 import { useAppDispatch } from "@/redux/hook";
 import { createWishlist } from "@/services/wishlist";
 
-import { IProduct, TProduct } from "@/types";
+import { IProduct } from "@/types";
 import { Heart, ShoppingBag, Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-const ProductCard = ({ product }: { product: TProduct }) => {
+const ProductCard = ({ product }: { product: IProduct }) => {
   const dispatch = useAppDispatch();
 
-  const handleAddProduct = (product: TProduct) => {
-    dispatch(addProduct(product));
+  const handleAddProduct = (product: IProduct) => {
+    dispatch(addToCart(product));
   };
-  const { user, userDetail, setIsLoading } = useUser();
+  const { userDetail } = useUser();
 
   const router = useRouter();
 
@@ -75,11 +75,11 @@ const ProductCard = ({ product }: { product: TProduct }) => {
           className="rounded-sm h-48 object-cover"
         />
         {product?.status === "sold" ? (
-          <div className="absolute left-2 top-2 bg-red-500 text-white px-2 rounded-full">
+          <div className="absolute left-2 top-2 bg-red-500 text-white px-2 rounded-md">
             {product.status}
           </div>
         ) : (
-          <div className="absolute left-2 top-2 bg-green-600 text-white px-2 rounded-full">
+          <div className="absolute left-2 top-2 bg-green-600 text-white px-2 rounded-md">
             {product.status}
           </div>
         )}
@@ -95,7 +95,7 @@ const ProductCard = ({ product }: { product: TProduct }) => {
         </Link>
 
         <div className="flex items-center justify-between my-2">
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-gray-600 dark:text-white">
             <span className="font-semibold">$ {product?.price}</span>
           </p>
 
@@ -109,7 +109,7 @@ const ProductCard = ({ product }: { product: TProduct }) => {
 
       <CardFooter className="block p-0">
         <div className="flex gap-2 items-center justify-between">
-          <Link href={`/product/${product._id}`}>
+          <Link href={`/products/${product._id}`}>
             <Button size="sm" className="rounded-full cursor-pointer">
               View Details
             </Button>
@@ -123,7 +123,7 @@ const ProductCard = ({ product }: { product: TProduct }) => {
                     variant="outline"
                     size="sm"
                     disabled={product?.status === "sold" ? true : false}
-                    className="w-8 h-8 p-0 flex items-center justify-center rounded-full cursor-pointer text-muted-foreground border-muted-foreground hover:text-secondary hover:bg-gray-400"
+                    className="w-8 h-8 p-0 flex items-center justify-center rounded-full cursor-pointer text-muted-foreground border-muted-foreground dark:text-white dark:border-slate-100 dark:hover:bg-orange-400"
                     onClick={() =>
                       handleAddToWishList(
                         product?._id,
@@ -144,7 +144,7 @@ const ProductCard = ({ product }: { product: TProduct }) => {
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button
-                    className="w-8 h-8 p-0 flex items-center justify-center rounded-full cursor-pointer text-muted-foreground border-muted-foreground hover:text-secondary hover:bg-gray-400"
+                    className="w-8 h-8 p-0 flex items-center justify-center rounded-full cursor-pointer text-muted-foreground border-muted-foreground dark:text-white dark:border-slate-100 dark:hover:bg-orange-400"
                     variant="outline"
                     size="sm"
                     disabled={product?.status === "sold" ? true : false}

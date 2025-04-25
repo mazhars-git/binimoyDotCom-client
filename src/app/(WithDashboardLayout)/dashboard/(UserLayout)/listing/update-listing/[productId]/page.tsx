@@ -1,13 +1,11 @@
-import UpdateListingForm from "@/components/modules/listings/UpdateListingForm";
-import { IProduct } from "@/types";
-import React from "react";
+import { UpdateListingForm } from "@/components/modules/listings/UpdateListingForm";
 
-const page = ({ product }: { product: IProduct }) => {
+const UpdateListingPage = () => {
   return (
-    <div>
-      <UpdateListingForm product={product} />
+    <div className="flex justify-center items-center">
+      <UpdateListingForm />
     </div>
   );
 };
 
-export default page;
+export default UpdateListingPage;

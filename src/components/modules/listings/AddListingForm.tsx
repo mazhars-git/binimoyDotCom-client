@@ -38,7 +38,10 @@ const productSchema = z.object({
   description: z.string().min(10, "Description is required"),
   price: z.number().min(1, "Price is required"),
   category: z.string().min(1, "Category is required"),
-  images: z.array(z.string()).min(1, "At least one image is required"),
+  images: z
+    .array(z.string())
+    .min(1, "At least one image is required")
+    .optional(),
   quantity: z.number().min(1, "Quantity is required"),
   status: z.string().min(1, "Status is required"),
   condition: z.string().min(1, "Condition is required"),
@@ -251,8 +254,8 @@ export default function AddListingForm() {
             />
           </div>
 
-          <div className="pt-5 grid grid-cols-3 gap-4 items-center">
-            <div className="">
+          <div className="pt-5 grid grid-cols-12 gap-4 items-center">
+            <div className="col-span-3">
               <FormField
                 control={form.control}
                 name="condition"
@@ -278,7 +281,7 @@ export default function AddListingForm() {
               />
             </div>
 
-            <div className="">
+            <div className="col-span-3">
               <FormField
                 control={form.control}
                 name="status"
@@ -288,7 +291,7 @@ export default function AddListingForm() {
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select Product Status" />
+                          <SelectValue placeholder="Select Status" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -302,7 +305,7 @@ export default function AddListingForm() {
               />
             </div>
 
-            <div className="">
+            <div className="col-span-6">
               <FormField
                 control={form.control}
                 name="category"
