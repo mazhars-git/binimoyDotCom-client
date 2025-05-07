@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { addAddress, orderSelector } from "@/redux/features/cartSlice";
+import { addAddress, orderSelector, removeFromCart } from "@/redux/features/cartSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { createOrder } from "@/services/Cart";
 import { useRouter } from "next/navigation";
@@ -22,6 +22,7 @@ export default function BuyerAddress() {
       toast.success(res?.message);
       if (res?.success && res?.data?.checkout_url) {
         router.push(res?.data?.checkout_url);
+        dispatch(removeFromCart());
       } else {
         toast.error("Order Failed");
       }
@@ -31,17 +32,17 @@ export default function BuyerAddress() {
   };
 
   return (
-    <div className="border-2 border-gray bg-slate-300 brightness-105 rounded-md col-span-4 p-5 ">
+    <div className="border-2 border-gray dark:bg-slate-800 brightness-105 rounded-md w-full p-5 lg:max-w-96">
       <div className="flex flex-col justify-between h-full">
-        <h1 className="text-2xl font-bold dark:text-gray-600 mb-1">
+        <h1 className="text-2xl font-bold mb-1">
           Shipping Address
         </h1>
-        <p className="text-gray-500">Enter your address.</p>
-        <div className="mt-5">
+        <div className="my-5">
           <Textarea
             onChange={(e) => handleShippingAddress(e.target.value)}
+            placeholder="Enter your shipping address"
             rows={5}
-            className="border-1"
+            className="border-1 dark:bg-slate-600 dark:text-slate-200"
           />
         </div>
         <div className="flex justify-center items-center pt-2">

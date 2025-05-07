@@ -1,6 +1,10 @@
 "use client";
+
+import { deleteListedProduct } from '@/services/Product';
+
+import { getAllListings } from "../Product";
+
 // import { deleteProductListing, getAllListings } from "@/server-actions/product";ss
-import { deleteProductListing, getAllListings } from "@/services/Product";
 
 export const getAllProducts = async () => {
   try {
@@ -14,7 +18,7 @@ export const getAllProducts = async () => {
 
 export const deleteProductById = async (productId: string) => {
   try {
-    const res = await deleteProductListing(productId);
+    const res = await deleteListedProduct(productId);
     return { success: true, data: res };
   } catch (error) {
     console.error("Delete error:", error);

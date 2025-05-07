@@ -8,12 +8,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { TProduct } from "@/types";
+import { IProduct } from "@/types";
 import { X } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
-const ProductsContainer = ({ products }: { products: TProduct[] }) => {
+const ProductsContainer = ({ products }: { products: IProduct[] }) => {
   const [priceSort, setPriceSort] = useState("price");
   const searchParams = useSearchParams();
   const { replace } = useRouter();

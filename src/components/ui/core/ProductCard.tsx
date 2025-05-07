@@ -31,6 +31,7 @@ const ProductCard = ({ product }: { product: IProduct }) => {
 
   const handleAddProduct = (product: IProduct) => {
     dispatch(addToCart(product));
+    toast.success("Product added to cart");
   };
   const { userDetail } = useUser();
 
@@ -126,7 +127,7 @@ const ProductCard = ({ product }: { product: IProduct }) => {
                     className="w-8 h-8 p-0 flex items-center justify-center rounded-full cursor-pointer text-muted-foreground border-muted-foreground dark:text-white dark:border-slate-100 dark:hover:bg-orange-400"
                     onClick={() =>
                       handleAddToWishList(
-                        product?._id,
+                        product?._id ?? "",
                         userDetail?._id as string
                       )
                     }

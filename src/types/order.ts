@@ -1,5 +1,5 @@
 export interface IOrder {
-  product: string;
+  product: string | undefined;
   address: string;
 }
 

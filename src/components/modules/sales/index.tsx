@@ -140,7 +140,7 @@ const SalesHistory = ({ trnasactions }: { trnasactions: TTransaction[] }) => {
         <span className="font-medium text-foreground/80">ACTIONS</span>
       ),
       cell: ({ row }) => {
-        const isUpdating = updatingIds.has(row.original.product._id);
+        const isUpdating = row.original.product._id ? updatingIds.has(row.original.product._id) : false;
         const isCompleted = row.original.status.toLowerCase() === "completed";
 
         return (

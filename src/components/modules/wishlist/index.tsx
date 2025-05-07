@@ -127,7 +127,7 @@ const ManageWishlist: React.FC<ManageWishlistProps> = ({ products }) => {
                   size="sm"
                   disabled={item?.productId?.status !== "available"}
 
-                  onClick={() => handleViewDetails(item?.productId._id)}
+                  onClick={() => item?.productId._id && handleViewDetails(item.productId._id)}
                 >
 
                   View Details

@@ -71,10 +71,10 @@ const PurchaseHistory = ({ transactions }: { transactions: TTransaction[] }) => 
 
   return (
     <div className="space-y-4 p-1">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-center mb-6">
         <div>
-          <h1 className="text-xl font-bold">Inventory Transactions</h1>
-          <p className="text-sm text-muted-foreground">
+          <h1 className="font-bold text-xl md:text-4xl">Inventory Transactions</h1>
+          <p className="text-center mt-2">
             {transactions.length} {transactions.length === 1 ? 'item' : 'items'} in record
           </p>
         </div>

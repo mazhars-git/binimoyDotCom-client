@@ -11,7 +11,7 @@ const CartPage = () => {
           Cart Page
         </h1>
       </div>
-      <div className="grid grid-cols-12 gap-7 text-center">
+      <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start items-center gap-7 text-center">
         <Cart />
         <BuyerAddress />
       </div>

@@ -9,7 +9,7 @@ export default function Cart() {
   const product = useAppSelector(orderedProductSelector);
 
   return (
-    <div className="col-span-8 row-span-3 h-full space-y-5">
+    <div className="w-full row-span-3 h-full space-y-5">
       {product.title === "" ? (
         <div className="text-center pt-5">
           <p className="text-2xl font-bold text-orange-500">Cart is empty!!</p>

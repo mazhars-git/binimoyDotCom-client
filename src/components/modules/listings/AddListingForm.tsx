@@ -147,7 +147,7 @@ export default function AddListingForm() {
       category: data.category,
       quantity: parseInt(data.quantity),
       location: data.location,
-      images: data.images, // Ensure images are included
+      images: data.images, 
     };
     try {
       const res = await addProductListings(modifiedData);

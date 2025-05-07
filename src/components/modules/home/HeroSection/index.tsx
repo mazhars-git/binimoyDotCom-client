@@ -7,11 +7,11 @@ const HeroSection = () => {
   return (
     <RUContainer>
       <div
-        className={`${styles.banner} flex items-center border-2 border-white rounded-3xl  mt-10`}
+        className={`${styles.banner} flex items-center border-2 border-white rounded-3xl max-h-[70vh] mt-10`}
       >
         <div className="justify-start items-center gap-4">
           <div className="pl-12">
-            <h1 className="text-4xl font-bold leading-normal">
+            <h1 className="sm:text-4xl text-2xl font-bold leading-normal">
               Don&apos;t Miss Out on <br /> These Unbeatable Black <br /> Friday
               Deals!
             </h1>

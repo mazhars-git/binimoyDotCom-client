@@ -28,15 +28,30 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const handleUser = async () => {
-    const user = await getCurrentUser();
-    
-    setUser(user);
-
+    const decodedUser = await getCurrentUser();
+  
+    // Type guard
+    if (
+      decodedUser &&
+      typeof decodedUser === "object" &&
+      "email" in decodedUser &&
+      "role" in decodedUser
+    ) {
+      setUser({
+        email: decodedUser.email as string,
+        role: decodedUser.role as "user" | "admin",
+        iat: decodedUser.iat,
+        exp: decodedUser.exp,
+      });
+    } else {
+      setUser(null);
+    }
+  
     const userDetail = await getCurrentUserDetails();
     setUserDetail(userDetail?.data);
-
+  
     setIsLoading(false);
-  };
+  };  
 
   useEffect(() => {
     handleUser();
