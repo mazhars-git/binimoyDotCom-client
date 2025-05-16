@@ -1,8 +1,8 @@
-# AdolBodol Frontend
+# Binimoy Frontend
 
 ## 📖 Project Overview
 
-**Adolbodol** is a modern gadget buy & sell platform that provides a seamless user experience for browsing, listing, and managing gadgets for sale. This frontend project is built with **Next.js** and **TypeScript**, ensuring fast performance and maintainable code. With features like **JWT-based authentication**, **role-based dashboards**, **secure form handling**, and a **themed UI**, it offers a scalable and user-centric interface.
+**Binimoy** is a modern gadget buy & sell platform that provides a seamless user experience for browsing, listing, and managing gadgets for sale. This frontend project is built with **Next.js** and **TypeScript**, ensuring fast performance and maintainable code. With features like **JWT-based authentication**, **role-based dashboards**, **secure form handling**, and a **themed UI**, it offers a scalable and user-centric interface.
 
 The application supports two types of users: **Admins** and **Regular Users**. Admins can manage products, users, and transactions, while users can list gadgets, manage their listings, and interact securely with the platform.
 
@@ -12,6 +12,8 @@ Whether you're buying, selling, or managing gadget deals—**Adolbodol** offers 
 
 
 ---
+
+## live link: https://binimoy-client.vercel.app
 
 ## ✨ Features
 
